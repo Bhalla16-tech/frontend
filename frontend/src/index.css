@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Kinovek Brand Colors - Black & Gold Premium Theme */
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 98%;
+
+    /* Primary: Gold/Yellow */
+    --primary: 48 100% 50%;
+    --primary-foreground: 0 0% 0%;
+
+    /* Secondary: Dark gray */
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 90%;
+
+    /* Muted: Medium gray */
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 65%;
+
+    /* Accent: Vibrant Yellow */
+    --accent: 48 100% 50%;
+    --accent-foreground: 0 0% 0%;
+
+    /* Gold tones for gradients */
+    --gold-light: 48 100% 60%;
+    --gold-dark: 42 100% 40%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 48 100% 50%;
+
+    --radius: 0.625rem;
+
+    /* Sidebar */
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 48 100% 50%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 48 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight font-semibold text-foreground;
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+}
+
+@layer components {
+  .gradient-gold {
+    background: linear-gradient(135deg, hsl(48 100% 55%) 0%, hsl(42 100% 40%) 100%);
+  }
+
+  .gradient-gold-text {
+    background: linear-gradient(135deg, hsl(50 100% 60%) 0%, hsl(45 100% 50%) 50%, hsl(40 100% 42%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-brand-text {
+    background: linear-gradient(135deg, hsl(150 60% 45%) 0%, hsl(160 50% 30%) 50%, hsl(180 40% 15%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-dark {
+    background: linear-gradient(180deg, hsl(0 0% 8%) 0%, hsl(0 0% 0%) 100%);
+  }
+
+  .card-elevated {
+    @apply bg-card rounded-xl border border-border transition-all duration-300;
+    box-shadow: 0 4px 20px -4px rgba(0,0,0,0.5);
+  }
+
+  .card-elevated:hover {
+    box-shadow: 0 12px 40px -8px rgba(255,200,0,0.15);
+    @apply -translate-y-0.5 border-accent/30;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-20 lg:py-24;
+  }
+
+  .container-tight {
+    @apply max-w-5xl mx-auto px-4 sm:px-6;
+  }
+
+  .container-wide {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn-primary {
+    @apply bg-accent text-accent-foreground font-semibold px-6 py-3 rounded-lg transition-all duration-200;
+    box-shadow: 0 4px 14px -2px rgba(255,200,0,0.4);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 6px 20px -2px rgba(255,200,0,0.5);
+    @apply -translate-y-0.5;
+  }
+}
+
+@layer utilities {
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out both;
+    opacity: 0;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out both;
+    opacity: 0;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.4s ease-out forwards;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+}
