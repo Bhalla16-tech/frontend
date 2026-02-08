@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { FileUploadZone } from "@/components/shared/FileUploadZone";
 import { toast } from "sonner";
+import { getATSScore } from "@/api/kinovekApi";
 
 interface ScoreBreakdown {
   category: string;
@@ -36,7 +37,7 @@ const ATSScore = () => {
     acceptedTypes,
   } = useFileUpload();
 
-  const handleCheckScore = () => {
+  const handleCheckScore = async () => {
     if (!file) {
       toast.error("Please upload your resume first");
       return;
@@ -44,29 +45,36 @@ const ATSScore = () => {
 
     setIsChecking(true);
     setAtsResult(null);
-    
-    // Simulate ATS check with mock results
-    setTimeout(() => {
-      setIsChecking(false);
+
+    try {
+      const result = await getATSScore(file);
+      const getStatus = (score: number): "good" | "warning" | "poor" => {
+        if (score >= 80) return "good";
+        if (score >= 60) return "warning";
+        return "poor";
+      };
+
       setAtsResult({
-        overallScore: 78,
+        overallScore: result.overallScore,
         breakdown: [
-          { category: "Keyword Relevance", score: 82, status: "good" },
-          { category: "Formatting Compliance", score: 90, status: "good" },
-          { category: "Experience Alignment", score: 75, status: "warning" },
-          { category: "Skills Match", score: 68, status: "warning" },
-          { category: "Readability Score", score: 85, status: "good" },
-          { category: "Contact Information", score: 100, status: "good" },
+          { category: "Keyword Relevance", score: result.keywordMatchScore, status: getStatus(result.keywordMatchScore) },
+          { category: "Formatting Compliance", score: result.formattingScore, status: getStatus(result.formattingScore) },
+          { category: "Section Completeness", score: result.sectionCompletenessScore, status: getStatus(result.sectionCompletenessScore) },
         ],
         suggestions: [
-          "Add more quantifiable achievements to your experience section",
-          "Include industry-specific keywords like 'Agile', 'Scrum', 'CI/CD'",
-          "Consider adding a skills summary section at the top",
-          "Use standard section headers (Experience, Education, Skills)",
-        ],
+          result.keywordMatchScore < 80 ? "Add more relevant keywords from the job description to your resume" : "",
+          result.formattingScore < 80 ? "Remove tables, images, or multi-column layouts for better ATS compatibility" : "",
+          result.sectionCompletenessScore < 80 ? "Ensure your resume has Summary, Experience, Education, and Skills sections" : "",
+          result.overallScore < 70 ? "Consider restructuring your resume with standard section headers" : "",
+        ].filter(Boolean),
       });
       toast.success("ATS analysis complete!");
-    }, 2000);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Failed to check ATS score";
+      toast.error(message);
+    } finally {
+      setIsChecking(false);
+    }
   };
 
   const getScoreColor = (score: number) => {

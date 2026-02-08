@@ -12,7 +12,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins(
                     "http://localhost:5173",   // Vite default
                     "http://localhost:3000",   // React default
-                    "http://localhost:8081"    // Current Vite port
+                    "http://localhost:8081",   // Alternate Vite port
+                    "http://localhost:8082"    // Alternate Vite port
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")

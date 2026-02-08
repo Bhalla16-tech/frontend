@@ -1,15 +1,18 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { FileSignature, ArrowRight, CheckCircle, Loader2 } from "lucide-react";
+import { FileSignature, ArrowRight, CheckCircle, Loader2, Copy, Download } from "lucide-react";
 import { useState } from "react";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { FileUploadZone } from "@/components/shared/FileUploadZone";
 import { toast } from "sonner";
+import { generateCoverLetter } from "@/api/kinovekApi";
 
 const CoverLetter = () => {
   const [jobDescription, setJobDescription] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [coverLetterText, setCoverLetterText] = useState<string | null>(null);
+  const [coverLetterMeta, setCoverLetterMeta] = useState<{ candidateName: string; targetRole: string; companyName: string } | null>(null);
 
   const {
     file,
@@ -24,19 +27,41 @@ const CoverLetter = () => {
     acceptedTypes,
   } = useFileUpload();
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!jobDescription.trim()) {
       toast.error("Please paste the job description");
       return;
     }
+    if (!file) {
+      toast.error("Please upload your resume for a personalized cover letter");
+      return;
+    }
 
     setIsGenerating(true);
-    
-    // Simulate generation
-    setTimeout(() => {
+    setCoverLetterText(null);
+
+    try {
+      const result = await generateCoverLetter(file, jobDescription);
+      setCoverLetterText(result.data.coverLetterText);
+      setCoverLetterMeta({
+        candidateName: result.data.candidateName,
+        targetRole: result.data.targetRole,
+        companyName: result.data.companyName,
+      });
+      toast.success("Cover letter generated successfully!");
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Failed to generate cover letter";
+      toast.error(message);
+    } finally {
       setIsGenerating(false);
-      toast.success("Cover letter generated successfully! Ready for download.");
-    }, 2500);
+    }
+  };
+
+  const handleCopy = () => {
+    if (coverLetterText) {
+      navigator.clipboard.writeText(coverLetterText);
+      toast.success("Copied to clipboard!");
+    }
   };
 
   return (
@@ -130,6 +155,32 @@ const CoverLetter = () => {
                 </Button>
               </div>
             </div>
+
+            {/* Generated Cover Letter */}
+            {coverLetterText && (
+              <div className="mt-10 card-elevated p-8 animate-in fade-in-50 duration-500">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-semibold text-white">
+                    Your <span className="gradient-gold-text">Cover Letter</span>
+                  </h3>
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="sm" onClick={handleCopy}>
+                      <Copy className="w-4 h-4 mr-1" /> Copy
+                    </Button>
+                  </div>
+                </div>
+                {coverLetterMeta && (
+                  <div className="flex gap-4 mb-4 text-sm text-muted-foreground">
+                    <span>Candidate: <strong className="text-foreground">{coverLetterMeta.candidateName}</strong></span>
+                    <span>Role: <strong className="text-foreground">{coverLetterMeta.targetRole}</strong></span>
+                    <span>Company: <strong className="text-foreground">{coverLetterMeta.companyName}</strong></span>
+                  </div>
+                )}
+                <div className="whitespace-pre-wrap text-foreground bg-secondary/30 p-6 rounded-xl border border-border text-base leading-relaxed">
+                  {coverLetterText}
+                </div>
+              </div>
+            )}
           </div>
         </section>
 

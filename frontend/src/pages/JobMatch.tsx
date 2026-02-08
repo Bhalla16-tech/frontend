@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { FileUploadZone } from "@/components/shared/FileUploadZone";
 import { toast } from "sonner";
+import { enhanceResume } from "@/api/kinovekApi";
 
 interface AnalysisResult {
   matchScore: number;
@@ -31,7 +32,7 @@ const JobMatch = () => {
     acceptedTypes,
   } = useFileUpload();
 
-  const handleAnalyze = () => {
+  const handleAnalyze = async () => {
     if (!file) {
       toast.error("Please upload your resume first");
       return;
@@ -43,17 +44,21 @@ const JobMatch = () => {
 
     setIsAnalyzing(true);
     setAnalysisResult(null);
-    
-    // Simulate analysis with mock results
-    setTimeout(() => {
-      setIsAnalyzing(false);
+
+    try {
+      const result = await enhanceResume(file, jobDescription);
       setAnalysisResult({
-        matchScore: 72,
-        matchedKeywords: ["React", "JavaScript", "TypeScript", "CSS", "HTML", "Git", "Agile", "REST API"],
-        missingKeywords: ["Node.js", "AWS", "Docker", "CI/CD", "GraphQL", "MongoDB", "Python", "Kubernetes"],
+        matchScore: result.atsScore,
+        matchedKeywords: result.matchedKeywords,
+        missingKeywords: result.missingKeywords,
       });
       toast.success("Analysis complete! Your match score is ready.");
-    }, 2000);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Failed to analyze resume";
+      toast.error(message);
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   return (
