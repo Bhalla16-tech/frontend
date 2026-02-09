@@ -1,10 +1,48 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import API_BASE_URL from "./config";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
+  timeout: 30000, // 30s timeout for file uploads
 });
+
+// ==================== Error Helper ====================
+
+/**
+ * Extract a user-friendly error message from an Axios error response.
+ * Handles: ApiResponse format, Spring error format, network errors, timeouts.
+ */
+export function extractErrorMessage(error: unknown, fallback: string): string {
+  if (error instanceof AxiosError) {
+    // Network error — backend is offline or unreachable
+    if (error.code === "ERR_NETWORK") {
+      return "Unable to connect to the server. Please check if the backend is running.";
+    }
+    // Request timed out
+    if (error.code === "ECONNABORTED") {
+      return "The request timed out. Please try again with a smaller file.";
+    }
+    // Server responded with an error status
+    if (error.response?.data) {
+      const data = error.response.data;
+      // ApiResponse format: { success: false, error: { code, message } }
+      if (data.error?.message) return data.error.message;
+      // Spring default format: { status, error, message }
+      if (typeof data.message === "string") return data.message;
+    }
+    // 413 — file too large (might not have JSON body)
+    if (error.response?.status === 413) {
+      return "File is too large. Maximum upload size is 10MB.";
+    }
+    // 5xx server errors
+    if (error.response && error.response.status >= 500) {
+      return "Something went wrong on the server. Please try again.";
+    }
+  }
+  if (error instanceof Error) return error.message;
+  return fallback;
+}
 
 // ==================== Health ====================
 

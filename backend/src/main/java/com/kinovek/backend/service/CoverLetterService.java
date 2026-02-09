@@ -131,7 +131,7 @@ public class CoverLetterService {
     private String extractCompanyName(String jd) {
         // Common patterns: "at [Company]", "[Company] is", "About [Company]", "Join [Company]"
         String[] patterns = {
-                "(?i)(?:at|join|about)\\s+([A-Z][A-Za-z0-9&'.\\s]{1,30}?)(?:\\s+(?:is|are|we|,|\\.))",
+                "(?i)(?:at|join|about)\\s+([A-Z][A-Za-z0-9&'.\\s]{1,30}?)(?:\\s*(?:is|are|we|,|\\.|\\n|$))",
                 "(?i)company\\s*[:=]\\s*(.+?)(?:\n|$)",
                 "(?i)^([A-Z][A-Za-z0-9&'.\\s]{2,25})\\s*$"
         };
@@ -147,14 +147,16 @@ public class CoverLetterService {
     private String extractRoleName(String jd) {
         String[] patterns = {
                 "(?i)(?:job title|position|role)\\s*[:=]\\s*(.+?)(?:\n|$)",
-                "(?i)(?:hiring|looking for|seeking)\\s+(?:a|an)?\\s*(.+?)(?:\\.|\n|$)",
+                "(?i)(?:hiring|looking for|seeking)\\s+(?:a|an)?\\s*(.+?)(?:\\s+(?:proficient|with|who|at|for|in|to|\\.|,|\\n|$))",
                 "(?i)^(.+?(?:engineer|developer|manager|analyst|designer|architect|scientist|specialist|coordinator|consultant|lead|director|intern))\\s*$"
         };
         for (String pattern : patterns) {
             Matcher m = Pattern.compile(pattern, Pattern.MULTILINE).matcher(jd);
             if (m.find()) {
                 String role = m.group(1).trim();
-                if (role.length() < 60) return role;
+                // Remove trailing articles/prepositions
+                role = role.replaceAll("\\s+(?:a|an|the|who|with|at|for|in|to)$", "").trim();
+                if (role.length() >= 3 && role.length() < 60) return role;
             }
         }
         return "[Position Title]";
@@ -177,13 +179,18 @@ public class CoverLetterService {
             }
         }
 
-        // Fallback: extract key phrases
+        // Fallback: extract key skill phrases rather than raw JD text
         if (reqs.isEmpty()) {
-            String[] keywords = jd.split("[,;\n]");
-            for (String kw : keywords) {
-                String t = kw.trim();
-                if (t.length() > 5 && t.length() < 80) {
-                    reqs.add(t);
+            String[] techTerms = {"Java", "Python", "JavaScript", "TypeScript", "React", "Angular", "Vue",
+                    "Spring Boot", "Node.js", "SQL", "AWS", "Azure", "Docker", "Kubernetes",
+                    "CI/CD", "microservices", "REST API", "Machine Learning", "DevOps",
+                    "Agile", "Scrum", "Git", "cloud", "containerization", "data analysis",
+                    "C++", "C#", ".NET", "Go", "Kotlin", "Swift", "GraphQL", "Redis",
+                    "Kafka", "Terraform", "Jenkins", "HTML", "CSS", "MongoDB", "PostgreSQL"};
+            String jdLower = jd.toLowerCase();
+            for (String term : techTerms) {
+                if (jdLower.contains(term.toLowerCase())) {
+                    reqs.add("proficiency in " + term);
                     if (reqs.size() >= 6) break;
                 }
             }
@@ -244,9 +251,23 @@ public class CoverLetterService {
         // Requirements alignment paragraph
         if (!requirements.isEmpty() && requirements.size() >= 2) {
             sb.append("I am particularly drawn to this opportunity because it requires expertise in areas where I have proven results. ");
-            sb.append("My experience includes ").append(requirements.get(0).toLowerCase());
-            if (requirements.size() > 1) {
-                sb.append(" and ").append(requirements.get(1).toLowerCase());
+            sb.append("My experience includes ");
+            // Extract just the tech term from "proficiency in X" format
+            List<String> cleanReqs = new ArrayList<>();
+            for (String req : requirements) {
+                String clean = req.replaceAll("(?i)^proficiency in\\s+", "").trim();
+                cleanReqs.add(clean);
+            }
+            if (cleanReqs.size() == 1) {
+                sb.append(cleanReqs.get(0));
+            } else if (cleanReqs.size() == 2) {
+                sb.append(cleanReqs.get(0)).append(" and ").append(cleanReqs.get(1));
+            } else {
+                for (int i = 0; i < Math.min(cleanReqs.size(), 3); i++) {
+                    if (i > 0) sb.append(", ");
+                    if (i == Math.min(cleanReqs.size(), 3) - 1) sb.append("and ");
+                    sb.append(cleanReqs.get(i));
+                }
             }
             sb.append(", which I believe are critical to succeeding in this position.\n\n");
         }

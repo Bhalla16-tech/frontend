@@ -2,6 +2,7 @@ package com.kinovek.backend.model;
 
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class ATSScoreResult {
 
     private int overallScore;

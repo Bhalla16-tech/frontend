@@ -50,6 +50,65 @@ public class KeywordMatcher {
         addSynonyms("CSS", "CSS3", "css");
         // Git synonyms
         addSynonyms("Git", "GitHub", "GitLab", "git");
+        // Microservices synonyms
+        addSynonyms("Microservices", "microservices", "micro-services", "Micro Services");
+        // Full Stack synonyms
+        addSynonyms("Full Stack", "Fullstack", "Full-Stack", "full stack", "fullstack");
+        // DevOps synonyms
+        addSynonyms("DevOps", "devops", "Dev-Ops", "dev ops");
+        // Cloud synonyms
+        addSynonyms("Cloud", "cloud computing", "Cloud Computing");
+        // Azure synonyms
+        addSynonyms("Azure", "Microsoft Azure", "azure");
+        // Linux synonyms
+        addSynonyms("Linux", "linux", "Ubuntu", "ubuntu", "CentOS");
+        // Agile synonyms
+        addSynonyms("Agile", "agile", "Agile Methodology");
+        // Scrum synonyms
+        addSynonyms("Scrum", "scrum", "Scrum Master");
+        // C++ synonyms
+        addSynonyms("C++", "cpp", "CPP");
+        // C# synonyms
+        addSynonyms("C#", "CSharp", "csharp");
+        // .NET synonyms
+        addSynonyms(".NET", "dotnet", "DotNet", "ASP.NET");
+        // Go synonyms
+        addSynonyms("Go", "Golang", "golang");
+        // Rust synonyms
+        addSynonyms("Rust", "rust");
+        // Swift synonyms
+        addSynonyms("Swift", "swift");
+        // Kotlin synonyms
+        addSynonyms("Kotlin", "kotlin");
+        // GraphQL synonyms
+        addSynonyms("GraphQL", "graphql", "Graph QL");
+        // Redis synonyms
+        addSynonyms("Redis", "redis");
+        // Kafka synonyms
+        addSynonyms("Kafka", "Apache Kafka", "kafka");
+        // Jenkins synonyms
+        addSynonyms("Jenkins", "jenkins");
+        // Terraform synonyms
+        addSynonyms("Terraform", "terraform");
+        // Backend/Frontend synonyms
+        addSynonyms("Backend", "backend", "back-end", "back end");
+        addSynonyms("Frontend", "frontend", "front-end", "front end");
+        // Data Science synonyms
+        addSynonyms("Data Science", "Data Analytics", "data science", "data analytics");
+        // Deep Learning synonyms
+        addSynonyms("Deep Learning", "deep learning", "DL");
+        // NLP synonyms
+        addSynonyms("NLP", "Natural Language Processing", "nlp");
+        // Selenium synonyms
+        addSynonyms("Selenium", "selenium");
+        // Spring Framework synonyms
+        addSynonyms("Spring", "Spring Framework", "spring");
+        // Hibernate synonyms
+        addSynonyms("Hibernate", "hibernate");
+        // RabbitMQ synonyms
+        addSynonyms("RabbitMQ", "rabbitmq");
+        // Elasticsearch synonyms
+        addSynonyms("Elasticsearch", "elasticsearch", "Elastic Search");
     }
 
     private static void addSynonyms(String canonical, String... synonyms) {
@@ -128,7 +187,18 @@ public class KeywordMatcher {
                 "strong", "good", "excellent", "preferred", "required", "minimum",
                 "plus", "including", "using", "knowledge", "understanding",
                 "ability", "skills", "skill", "proficiency", "proficient",
-                "familiar", "familiarity", "exposure"
+                "familiar", "familiarity", "exposure",
+                "looking", "seeking", "hiring", "join", "ideal", "candidate",
+                "responsible", "responsibilities", "opportunity", "position",
+                "company", "organization", "department", "apply", "application",
+                "benefits", "salary", "compensation", "remote", "hybrid",
+                "onsite", "full-time", "part-time", "contract", "description",
+                "qualification", "qualifications", "requirement", "requirements",
+                "deadline", "location", "based", "environment",
+                "junior", "senior", "lead", "principal", "staff", "intern",
+                "manager", "director", "associate", "analyst", "specialist",
+                "engineer", "developer", "architect", "consultant", "coordinator",
+                "officer", "executive", "administrator", "supervisor"
         );
 
         Set<String> keywords = new LinkedHashSet<>();
@@ -145,6 +215,8 @@ public class KeywordMatcher {
         String[] words = text.split("[\\s,;|/()\\[\\]{}]+");
         for (String word : words) {
             String cleaned = word.replaceAll("[^a-zA-Z0-9.#+\\-]", "").trim();
+            // Strip trailing periods (but keep internal ones like "Node.js", ".NET")
+            cleaned = cleaned.replaceAll("\\.$", "");
             if (cleaned.length() >= 2 && !stopWords.contains(cleaned.toLowerCase())) {
                 // Check if it maps to a known synonym
                 String canonical = SYNONYM_MAP.get(cleaned.toLowerCase());
@@ -156,6 +228,27 @@ public class KeywordMatcher {
                 }
             }
         }
+
+        // Third pass: remove sub-words that are parts of compound keywords
+        // e.g., remove "Spring" and "Boot" if "Spring Boot" is already matched
+        Set<String> toRemove = new HashSet<>();
+        for (String kw : keywords) {
+            if (kw.contains(" ")) {
+                // This is a compound keyword - mark its individual parts for removal
+                String[] parts = kw.split("\\s+");
+                for (String part : parts) {
+                    // Only remove if the part exists as a standalone keyword
+                    // and is NOT itself a known tech term with a different canonical meaning
+                    String partCanonical = SYNONYM_MAP.get(part.toLowerCase());
+                    if (partCanonical != null && partCanonical.equals(part)) {
+                        // The part is itself a canonical tech term — keep it
+                        continue;
+                    }
+                    toRemove.add(part);
+                }
+            }
+        }
+        keywords.removeAll(toRemove);
 
         return keywords;
     }

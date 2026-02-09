@@ -1,12 +1,12 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { BarChart3, ArrowRight, TrendingUp, Loader2, CheckCircle, AlertTriangle } from "lucide-react";
-import { useState } from "react";
+import { BarChart3, ArrowRight, TrendingUp, Loader2, CheckCircle, AlertTriangle, XCircle, RotateCcw, PartyPopper } from "lucide-react";
+import { useState, useRef } from "react";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { FileUploadZone } from "@/components/shared/FileUploadZone";
 import { toast } from "sonner";
-import { getATSScore } from "@/api/kinovekApi";
+import { getATSScore, extractErrorMessage } from "@/api/kinovekApi";
 
 interface ScoreBreakdown {
   category: string;
@@ -23,9 +23,12 @@ interface ATSResult {
 const ATSScore = () => {
   const [isChecking, setIsChecking] = useState(false);
   const [atsResult, setAtsResult] = useState<ATSResult | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   const {
     file,
+    fileError,
     isDragging,
     inputRef,
     handleDrop,
@@ -35,6 +38,7 @@ const ATSScore = () => {
     handleInputChange,
     clearFile,
     acceptedTypes,
+    maxSizeMB,
   } = useFileUpload();
 
   const handleCheckScore = async () => {
@@ -45,6 +49,7 @@ const ATSScore = () => {
 
     setIsChecking(true);
     setAtsResult(null);
+    setErrorMessage(null);
 
     try {
       const result = await getATSScore(file);
@@ -54,6 +59,13 @@ const ATSScore = () => {
         return "poor";
       };
 
+      const suggestions = [
+        result.keywordMatchScore < 80 ? "Add more relevant keywords from the job description to your resume" : "",
+        result.formattingScore < 80 ? "Remove tables, images, or multi-column layouts for better ATS compatibility" : "",
+        result.sectionCompletenessScore < 80 ? "Ensure your resume has Summary, Experience, Education, and Skills sections" : "",
+        result.overallScore < 70 ? "Consider restructuring your resume with standard section headers" : "",
+      ].filter(Boolean);
+
       setAtsResult({
         overallScore: result.overallScore,
         breakdown: [
@@ -61,17 +73,14 @@ const ATSScore = () => {
           { category: "Formatting Compliance", score: result.formattingScore, status: getStatus(result.formattingScore) },
           { category: "Section Completeness", score: result.sectionCompletenessScore, status: getStatus(result.sectionCompletenessScore) },
         ],
-        suggestions: [
-          result.keywordMatchScore < 80 ? "Add more relevant keywords from the job description to your resume" : "",
-          result.formattingScore < 80 ? "Remove tables, images, or multi-column layouts for better ATS compatibility" : "",
-          result.sectionCompletenessScore < 80 ? "Ensure your resume has Summary, Experience, Education, and Skills sections" : "",
-          result.overallScore < 70 ? "Consider restructuring your resume with standard section headers" : "",
-        ].filter(Boolean),
+        suggestions,
       });
       toast.success("ATS analysis complete!");
+      setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "Failed to check ATS score";
-      toast.error(message);
+      const msg = extractErrorMessage(error, "Failed to check ATS score. Please try again.");
+      setErrorMessage(msg);
+      toast.error(msg);
     } finally {
       setIsChecking(false);
     }
@@ -128,6 +137,7 @@ const ATSScore = () => {
               <div className="space-y-6">
                 <FileUploadZone
                   file={file}
+                  fileError={fileError}
                   isDragging={isDragging}
                   inputRef={inputRef}
                   onDrop={handleDrop}
@@ -137,6 +147,7 @@ const ATSScore = () => {
                   onInputChange={handleInputChange}
                   onClear={clearFile}
                   acceptedTypes={acceptedTypes}
+                  maxSizeMB={maxSizeMB}
                 />
 
                 <Button 
@@ -144,12 +155,12 @@ const ATSScore = () => {
                   size="xl" 
                   className="w-full"
                   onClick={handleCheckScore}
-                  disabled={isChecking}
+                  disabled={isChecking || !file}
                 >
                   {isChecking ? (
                     <>
                       <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                      Checking...
+                      Analyzing...
                     </>
                   ) : (
                     <>
@@ -159,11 +170,40 @@ const ATSScore = () => {
                   )}
                 </Button>
               </div>
+
+              {/* Processing Overlay */}
+              {isChecking && (
+                <div className="mt-6 p-6 rounded-xl border border-accent/30 bg-accent/5 animate-pulse">
+                  <div className="flex items-center gap-4">
+                    <Loader2 className="w-8 h-8 text-accent animate-spin flex-shrink-0" />
+                    <div>
+                      <p className="font-medium text-foreground">Scanning your resume...</p>
+                      <p className="text-sm text-muted-foreground mt-1">Checking formatting, keywords, and section structure</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Error Banner */}
+              {errorMessage && !isChecking && (
+                <div className="mt-6 p-5 rounded-xl border border-destructive/30 bg-destructive/5">
+                  <div className="flex items-start gap-3">
+                    <XCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="font-medium text-destructive">Analysis Failed</p>
+                      <p className="text-sm text-muted-foreground mt-1">{errorMessage}</p>
+                    </div>
+                    <Button variant="outline" size="sm" onClick={handleCheckScore} className="flex-shrink-0">
+                      <RotateCcw className="w-4 h-4 mr-1" /> Retry
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* ATS Results Section */}
             {atsResult && (
-              <div className="mt-12 space-y-8 animate-in fade-in-50 duration-500">
+              <div ref={resultsRef} className="mt-12 space-y-8 animate-in fade-in-50 slide-in-from-bottom-4 duration-500">
                 {/* Overall Score */}
                 <div className="card-elevated p-8 text-center">
                   <h2 className="text-2xl font-bold text-white mb-6">
@@ -226,17 +266,25 @@ const ATSScore = () => {
                       Improvement <span className="gradient-gold-text">Suggestions</span>
                     </h3>
                   </div>
-                  <div className="space-y-3">
-                    {atsResult.suggestions.map((suggestion, index) => (
-                      <div 
-                        key={index}
-                        className="flex items-start gap-3 p-4 bg-accent/5 rounded-xl border border-accent/20"
-                      >
-                        <CheckCircle className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
-                        <span className="text-base text-foreground">{suggestion}</span>
-                      </div>
-                    ))}
-                  </div>
+                  {atsResult.suggestions.length > 0 ? (
+                    <div className="space-y-3">
+                      {atsResult.suggestions.map((suggestion, index) => (
+                        <div 
+                          key={index}
+                          className="flex items-start gap-3 p-4 bg-accent/5 rounded-xl border border-accent/20"
+                        >
+                          <CheckCircle className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
+                          <span className="text-base text-foreground">{suggestion}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center p-6">
+                      <PartyPopper className="w-10 h-10 text-green-500 mx-auto mb-3" />
+                      <p className="text-lg font-medium text-green-400">All checks passed!</p>
+                      <p className="text-sm text-muted-foreground mt-1">Your resume is well-optimized for ATS systems.</p>
+                    </div>
+                  )}
                 </div>
               </div>
             )}

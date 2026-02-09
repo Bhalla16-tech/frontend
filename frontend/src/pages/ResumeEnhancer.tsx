@@ -1,12 +1,12 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { Sparkles, ArrowRight, CheckCircle, Loader2, TrendingUp, FileText } from "lucide-react";
-import { useState } from "react";
+import { Sparkles, ArrowRight, CheckCircle, Loader2, FileText, XCircle, RotateCcw, PartyPopper } from "lucide-react";
+import { useState, useRef } from "react";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { FileUploadZone } from "@/components/shared/FileUploadZone";
 import { toast } from "sonner";
-import { enhanceResume } from "@/api/kinovekApi";
+import { enhanceResume, extractErrorMessage } from "@/api/kinovekApi";
 
 interface EnhancementResult {
   atsScore: number;
@@ -19,9 +19,12 @@ const ResumeEnhancer = () => {
   const [jobDescription, setJobDescription] = useState("");
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [enhancementResult, setEnhancementResult] = useState<EnhancementResult | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   const {
     file,
+    fileError,
     isDragging,
     inputRef,
     handleDrop,
@@ -31,6 +34,7 @@ const ResumeEnhancer = () => {
     handleInputChange,
     clearFile,
     acceptedTypes,
+    maxSizeMB,
   } = useFileUpload();
 
   const handleEnhance = async () => {
@@ -41,6 +45,7 @@ const ResumeEnhancer = () => {
 
     setIsEnhancing(true);
     setEnhancementResult(null);
+    setErrorMessage(null);
 
     try {
       const result = await enhanceResume(file, jobDescription);
@@ -50,13 +55,36 @@ const ResumeEnhancer = () => {
         missingKeywords: result.missingKeywords,
         suggestions: result.suggestions,
       });
-      toast.success("Resume analysis complete! Your results are ready.");
+      toast.success("Resume analysis complete!");
+      // Scroll to results
+      setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "Failed to analyze resume";
-      toast.error(message);
+      const msg = extractErrorMessage(error, "Failed to analyze resume. Please try again.");
+      setErrorMessage(msg);
+      toast.error(msg);
     } finally {
       setIsEnhancing(false);
     }
+  };
+
+  const getScoreColor = (score: number) => {
+    if (score >= 80) return "text-green-500";
+    if (score >= 60) return "text-yellow-500";
+    return "text-destructive";
+  };
+
+  const getScoreBorderColor = (score: number) => {
+    if (score >= 80) return "border-green-500/50";
+    if (score >= 60) return "border-yellow-500/50";
+    return "border-destructive/50";
+  };
+
+  const getScoreLabel = (score: number) => {
+    if (score >= 90) return "Excellent";
+    if (score >= 80) return "Great";
+    if (score >= 60) return "Good";
+    if (score >= 40) return "Needs Work";
+    return "Low";
   };
 
   return (
@@ -99,6 +127,7 @@ const ResumeEnhancer = () => {
                 {/* Resume Upload */}
                 <FileUploadZone
                   file={file}
+                  fileError={fileError}
                   isDragging={isDragging}
                   inputRef={inputRef}
                   onDrop={handleDrop}
@@ -108,6 +137,7 @@ const ResumeEnhancer = () => {
                   onInputChange={handleInputChange}
                   onClear={clearFile}
                   acceptedTypes={acceptedTypes}
+                  maxSizeMB={maxSizeMB}
                 />
 
                 {/* Job Description (Optional) */}
@@ -120,6 +150,7 @@ const ResumeEnhancer = () => {
                     onChange={(e) => setJobDescription(e.target.value)}
                     placeholder="Paste the job description to get targeted enhancements..."
                     className="w-full h-32 p-4 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all"
+                    disabled={isEnhancing}
                   />
                 </div>
 
@@ -128,12 +159,12 @@ const ResumeEnhancer = () => {
                   size="xl" 
                   className="w-full"
                   onClick={handleEnhance}
-                  disabled={isEnhancing}
+                  disabled={isEnhancing || !file}
                 >
                   {isEnhancing ? (
                     <>
                       <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                      Enhancing...
+                      Analyzing your resume...
                     </>
                   ) : (
                     <>
@@ -143,19 +174,58 @@ const ResumeEnhancer = () => {
                   )}
                 </Button>
               </div>
+
+              {/* Processing Overlay */}
+              {isEnhancing && (
+                <div className="mt-6 p-6 rounded-xl border border-accent/30 bg-accent/5 animate-pulse">
+                  <div className="flex items-center gap-4">
+                    <Loader2 className="w-8 h-8 text-accent animate-spin flex-shrink-0" />
+                    <div>
+                      <p className="font-medium text-foreground">Processing your resume...</p>
+                      <p className="text-sm text-muted-foreground mt-1">Parsing content, matching keywords, and generating suggestions</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Error Banner */}
+              {errorMessage && !isEnhancing && (
+                <div className="mt-6 p-5 rounded-xl border border-destructive/30 bg-destructive/5">
+                  <div className="flex items-start gap-3">
+                    <XCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="font-medium text-destructive">Analysis Failed</p>
+                      <p className="text-sm text-muted-foreground mt-1">{errorMessage}</p>
+                    </div>
+                    <Button variant="outline" size="sm" onClick={handleEnhance} className="flex-shrink-0">
+                      <RotateCcw className="w-4 h-4 mr-1" /> Retry
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Enhancement Results Section */}
             {enhancementResult && (
-              <div className="mt-12 space-y-8 animate-in fade-in-50 duration-500">
+              <div ref={resultsRef} className="mt-12 space-y-8 animate-in fade-in-50 slide-in-from-bottom-4 duration-500">
                 {/* ATS Score */}
                 <div className="card-elevated p-8 text-center">
                   <h2 className="text-2xl font-bold text-white mb-6">
                     Your ATS <span className="gradient-gold-text">Score</span>
                   </h2>
-                  <div className="w-36 h-36 rounded-full border-4 border-accent/50 flex items-center justify-center mx-auto bg-accent/10 mb-4">
-                    <span className="text-5xl font-bold gradient-gold-text">{enhancementResult.atsScore}%</span>
+                  <div className={`w-36 h-36 rounded-full border-4 ${getScoreBorderColor(enhancementResult.atsScore)} flex items-center justify-center mx-auto bg-accent/10 mb-4`}>
+                    <span className={`text-5xl font-bold ${getScoreColor(enhancementResult.atsScore)}`}>{enhancementResult.atsScore}%</span>
                   </div>
+                  <p className={`text-lg font-semibold ${getScoreColor(enhancementResult.atsScore)}`}>
+                    {getScoreLabel(enhancementResult.atsScore)}
+                  </p>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    {enhancementResult.atsScore >= 80 
+                      ? "Your resume is well-aligned with this job description."
+                      : enhancementResult.atsScore >= 60 
+                      ? "Good foundation — add the missing keywords below to boost your score."
+                      : "Your resume needs more alignment with the job description."}
+                  </p>
                 </div>
 
                 {/* Keywords */}
@@ -166,15 +236,22 @@ const ResumeEnhancer = () => {
                       <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center">
                         <CheckCircle className="w-5 h-5 text-green-500" />
                       </div>
-                      <h3 className="text-xl font-semibold text-white">Matched Keywords</h3>
+                      <div>
+                        <h3 className="text-xl font-semibold text-white">Matched Keywords</h3>
+                        <p className="text-sm text-muted-foreground">{enhancementResult.matchedKeywords.length} found</p>
+                      </div>
                     </div>
-                    <div className="flex flex-wrap gap-2">
-                      {enhancementResult.matchedKeywords.map((kw, i) => (
-                        <span key={i} className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm">
-                          {kw}
-                        </span>
-                      ))}
-                    </div>
+                    {enhancementResult.matchedKeywords.length > 0 ? (
+                      <div className="flex flex-wrap gap-2">
+                        {enhancementResult.matchedKeywords.map((kw, i) => (
+                          <span key={i} className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-sm">
+                            {kw}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-muted-foreground italic">No matching keywords found. Try adding a job description for comparison.</p>
+                    )}
                   </div>
 
                   {/* Missing Keywords */}
@@ -183,15 +260,25 @@ const ResumeEnhancer = () => {
                       <div className="w-10 h-10 rounded-lg bg-destructive/10 flex items-center justify-center">
                         <FileText className="w-5 h-5 text-destructive" />
                       </div>
-                      <h3 className="text-xl font-semibold text-white">Missing Keywords</h3>
+                      <div>
+                        <h3 className="text-xl font-semibold text-white">Missing Keywords</h3>
+                        <p className="text-sm text-muted-foreground">{enhancementResult.missingKeywords.length} to add</p>
+                      </div>
                     </div>
-                    <div className="flex flex-wrap gap-2">
-                      {enhancementResult.missingKeywords.map((kw, i) => (
-                        <span key={i} className="px-3 py-1 rounded-full bg-destructive/10 border border-destructive/30 text-red-400 text-sm">
-                          {kw}
-                        </span>
-                      ))}
-                    </div>
+                    {enhancementResult.missingKeywords.length > 0 ? (
+                      <div className="flex flex-wrap gap-2">
+                        {enhancementResult.missingKeywords.map((kw, i) => (
+                          <span key={i} className="px-3 py-1 rounded-full bg-destructive/10 border border-destructive/30 text-red-400 text-sm">
+                            {kw}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2 text-green-400">
+                        <PartyPopper className="w-5 h-5" />
+                        <p className="text-sm font-medium">All keywords matched! Great job.</p>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -200,14 +287,18 @@ const ResumeEnhancer = () => {
                   <h3 className="text-xl font-semibold text-white mb-6 text-center">
                     Improvement <span className="gradient-gold-text">Suggestions</span>
                   </h3>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    {enhancementResult.suggestions.map((suggestion, index) => (
-                      <div key={index} className="flex items-start gap-3 p-4 bg-accent/5 rounded-xl border border-accent/20">
-                        <CheckCircle className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
-                        <span className="text-base text-foreground">{suggestion}</span>
-                      </div>
-                    ))}
-                  </div>
+                  {enhancementResult.suggestions.length > 0 ? (
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      {enhancementResult.suggestions.map((suggestion, index) => (
+                        <div key={index} className="flex items-start gap-3 p-4 bg-accent/5 rounded-xl border border-accent/20">
+                          <CheckCircle className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
+                          <span className="text-base text-foreground">{suggestion}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-center text-muted-foreground">No additional suggestions — your resume looks great!</p>
+                  )}
                 </div>
               </div>
             )}

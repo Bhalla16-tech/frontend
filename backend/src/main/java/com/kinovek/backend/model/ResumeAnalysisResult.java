@@ -3,6 +3,7 @@ package com.kinovek.backend.model;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class ResumeAnalysisResult {
 
     private int atsScore;

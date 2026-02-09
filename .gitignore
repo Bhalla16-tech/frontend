@@ -10,3 +10,8 @@ backend/.mvn/
 .env
 *.log
 .DS_Store
+test_resume.docx
+test_resume.txt
+test_output.pdf
+test_output2.pdf
+test_ats_output.pdf

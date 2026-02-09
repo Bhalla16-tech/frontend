@@ -32,6 +32,7 @@ public class ApiResponse<T> {
     public Object getError() { return error; }
     public void setError(Object error) { this.error = error; }
 
+    @SuppressWarnings("unused")
     private static class ErrorDetail {
         private String code;
         private String message;
