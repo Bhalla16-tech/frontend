@@ -170,7 +170,44 @@
       "Vert.x",
       "Node.js",
       "Deno",
-      "Bun"
+      "Bun",
+      "JPA",
+      "Spring Data",
+      "Spring Data JPA",
+      "JDBC",
+      "MyBatis"
+    ],
+    "buildTools": [
+      "Maven",
+      "Gradle",
+      "Ant",
+      "npm",
+      "yarn",
+      "pnpm",
+      "pip",
+      "Poetry",
+      "Make",
+      "CMake",
+      "Bazel",
+      "SBT"
+    ],
+    "messagingAndStreaming": [
+      "Kafka",
+      "RabbitMQ",
+      "Apache Kafka",
+      "ActiveMQ",
+      "Amazon SQS",
+      "Amazon SNS",
+      "Azure Service Bus",
+      "Google Pub/Sub",
+      "NATS",
+      "ZeroMQ",
+      "MQTT",
+      "WebSocket",
+      "Socket.io",
+      "gRPC",
+      "Apache Pulsar",
+      "Event-Driven Architecture"
     ],
     "databases": [
       "MySQL",
@@ -2035,6 +2072,43 @@
     ],
     "Operating System": [
       "OS"
+    ],
+    "JPA": [
+      "Java Persistence API",
+      "Jakarta Persistence"
+    ],
+    "RabbitMQ": [
+      "rabbit mq",
+      "AMQP"
+    ],
+    "Maven": [
+      "Apache Maven",
+      "mvn"
+    ],
+    "Gradle": [
+      "gradle"
+    ],
+    "WebSocket": [
+      "Web Socket",
+      "WebSockets"
+    ],
+    "gRPC": [
+      "grpc",
+      "GRPC"
+    ],
+    "HTML": [
+      "HTML5",
+      "html5"
+    ],
+    "CSS": [
+      "CSS3",
+      "css3"
+    ],
+    "Prometheus": [
+      "prometheus"
+    ],
+    "Grafana": [
+      "grafana"
     ]
   },
   "sectionHeaders": {

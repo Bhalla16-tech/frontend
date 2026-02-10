@@ -1,0 +1,194 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "ATS-Optimized Resume PDF Generation Configuration",
+    "lastUpdated": "2026-02-10",
+    "purpose": "Used by PDFGenerator.java to create ATS-friendly enhanced resumes"
+  },
+
+  "pdfSettings": {
+    "pageSize": "A4",
+    "pageSizeInPoints": { "width": 595, "height": 842 },
+    "margins": {
+      "top": 54,
+      "bottom": 54,
+      "left": 54,
+      "right": 54,
+      "unit": "points",
+      "note": "54 points = 0.75 inches (compromise between 0.5 and 1 inch)"
+    },
+    "pdfVersion": "1.4",
+    "textColor": "#000000",
+    "headingAccentColor": "#1a1a2e",
+    "lineColor": "#CCCCCC",
+    "backgroundColor": "#FFFFFF",
+    "maxFileSizeKB": 500,
+    "security": "NONE",
+    "fontEmbedding": "SUBSET"
+  },
+
+  "fonts": {
+    "primary": "Calibri",
+    "fallback1": "Arial",
+    "fallback2": "Helvetica",
+    "fallbackFinal": "SansSerif",
+    "note": "Use Calibri as first choice. If not available, fall back to Arial > Helvetica > system SansSerif",
+    "javaFontMapping": {
+      "Calibri": "If available via OpenPDF font loading, else use Arial",
+      "Arial": "Available in most systems",
+      "Helvetica": "Built-in PDF base font - always available",
+      "SansSerif": "Java logical font - always available"
+    }
+  },
+
+  "fontSizes": {
+    "candidateName": { "size": 20, "style": "BOLD", "description": "Full name at top" },
+    "contactInfo": { "size": 10, "style": "NORMAL", "description": "Phone, email, LinkedIn, location" },
+    "sectionHeading": { "size": 13, "style": "BOLD", "description": "PROFESSIONAL SUMMARY, SKILLS, etc." },
+    "jobTitle": { "size": 11, "style": "BOLD", "description": "Software Engineer, etc." },
+    "companyName": { "size": 11, "style": "NORMAL", "description": "Google, TCS, etc." },
+    "dateRange": { "size": 10, "style": "NORMAL", "description": "January 2023 - Present" },
+    "bodyText": { "size": 10.5, "style": "NORMAL", "description": "Bullet points and descriptions" },
+    "skillCategory": { "size": 10.5, "style": "BOLD", "description": "Programming Languages:" },
+    "skillValues": { "size": 10.5, "style": "NORMAL", "description": "Java, Python, JavaScript" },
+    "educationDegree": { "size": 11, "style": "BOLD", "description": "B.Tech in Computer Science" },
+    "educationInstitution": { "size": 11, "style": "NORMAL", "description": "IIT Delhi" },
+    "projectTitle": { "size": 11, "style": "BOLD", "description": "E-Commerce Platform" }
+  },
+
+  "spacing": {
+    "lineSpacing": 1.15,
+    "afterCandidateName": 4,
+    "afterContactInfo": 8,
+    "beforeSectionHeading": 12,
+    "afterSectionHeading": 4,
+    "afterSectionLine": 4,
+    "betweenJobEntries": 8,
+    "betweenBulletPoints": 2,
+    "afterBulletPoint": 2,
+    "betweenSkillRows": 3,
+    "betweenProjectEntries": 6,
+    "afterEducationEntry": 6,
+    "unit": "points"
+  },
+
+  "sectionOrder": {
+    "fresher": [
+      "CONTACT_INFO",
+      "PROFESSIONAL_SUMMARY",
+      "EDUCATION",
+      "SKILLS",
+      "PROJECTS",
+      "EXPERIENCE",
+      "CERTIFICATIONS",
+      "ACHIEVEMENTS"
+    ],
+    "experienced": [
+      "CONTACT_INFO",
+      "PROFESSIONAL_SUMMARY",
+      "SKILLS",
+      "EXPERIENCE",
+      "PROJECTS",
+      "EDUCATION",
+      "CERTIFICATIONS",
+      "ACHIEVEMENTS"
+    ],
+    "note": "If experience < 2 years, use fresher order. Else use experienced order."
+  },
+
+  "sectionHeadings": {
+    "PROFESSIONAL_SUMMARY": "PROFESSIONAL SUMMARY",
+    "SKILLS": "TECHNICAL SKILLS",
+    "EXPERIENCE": "WORK EXPERIENCE",
+    "EDUCATION": "EDUCATION",
+    "PROJECTS": "PROJECTS",
+    "CERTIFICATIONS": "CERTIFICATIONS",
+    "ACHIEVEMENTS": "ACHIEVEMENTS",
+    "formatting": "ALL_CAPS_BOLD_WITH_LINE_BELOW"
+  },
+
+  "contactInfoFormat": {
+    "layout": "CENTER_ALIGNED",
+    "nameLine": "Full Name (Bold, 20pt, centered)",
+    "detailsLine": "City, State | +91-XXXXX-XXXXX | email@gmail.com | linkedin.com/in/name",
+    "separator": " | ",
+    "noIcons": true,
+    "noFullAddress": true,
+    "note": "Never put contact info in PDF header/footer - always in document body"
+  },
+
+  "bulletPointFormat": {
+    "symbol": "•",
+    "indentation": 15,
+    "maxPerJob": 6,
+    "minPerJob": 2,
+    "maxLineLength": 2,
+    "startWithActionVerb": true,
+    "noPeriodAtEnd": true,
+    "unit": "points"
+  },
+
+  "dateFormat": {
+    "preferred": "Month YYYY",
+    "example": "January 2023 - Present",
+    "currentJobEndDate": "Present",
+    "alignment": "RIGHT_ALIGNED_SAME_LINE_AS_COMPANY",
+    "note": "Always include month + year. Never year-only."
+  },
+
+  "skillsFormat": {
+    "layout": "CATEGORY_COLON_VALUES",
+    "example": "Programming Languages: Java, Python, JavaScript, TypeScript",
+    "maxCategoriesVisible": 8,
+    "separateSoftSkillsRow": true,
+    "noRatingBars": true,
+    "noStarRatings": true,
+    "noPercentageBars": true,
+    "note": "Never use visual ratings - ATS cannot read them"
+  },
+
+  "atsRules": {
+    "noTables": true,
+    "noColumns": true,
+    "noTextBoxes": true,
+    "noImages": true,
+    "noGraphics": true,
+    "noIcons": true,
+    "noHeaderFooter": true,
+    "noSpecialCharacters": true,
+    "noWatermarks": true,
+    "noBackgroundColors": true,
+    "singleColumnOnly": true,
+    "standardSectionHeadings": true,
+    "textSelectableAndCopyable": true,
+    "noPasswordProtection": true,
+    "noCopyRestrictions": true,
+    "embeddedFonts": true
+  },
+
+  "resumeLength": {
+    "fresher": {
+      "maxPages": 1,
+      "idealWordCount": "400-600"
+    },
+    "experienced_2_5_years": {
+      "maxPages": 2,
+      "idealWordCount": "500-800"
+    }
+  },
+
+  "actionVerbs": {
+    "technical": ["Developed", "Engineered", "Implemented", "Architected", "Deployed", "Automated", "Optimized", "Integrated", "Programmed", "Designed", "Built", "Configured", "Debugged", "Migrated", "Refactored", "Streamlined", "Upgraded", "Tested", "Launched", "Maintained"],
+    "leadership": ["Led", "Managed", "Directed", "Supervised", "Coordinated", "Mentored", "Orchestrated", "Spearheaded", "Championed", "Delegated"],
+    "analytical": ["Analyzed", "Assessed", "Evaluated", "Investigated", "Researched", "Identified", "Measured", "Forecasted", "Diagnosed", "Mapped"],
+    "achievement": ["Achieved", "Exceeded", "Improved", "Increased", "Reduced", "Delivered", "Accelerated", "Transformed", "Pioneered", "Surpassed"],
+    "communication": ["Presented", "Collaborated", "Trained", "Negotiated", "Documented", "Published", "Facilitated", "Advised", "Consulted", "Persuaded"]
+  },
+
+  "fileNaming": {
+    "pattern": "{FirstName}_{LastName}_Resume.pdf",
+    "example": "Rahul_Sharma_Resume.pdf",
+    "noSpaces": true,
+    "useUnderscores": true
+  }
+}

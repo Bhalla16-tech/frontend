@@ -14,11 +14,18 @@ import java.util.List;
 @Service
 public class ResumeEnhancerService {
 
-    @Autowired
-    private ResumeParserService resumeParserService;
+    private final ResumeParserService resumeParserService;
+    private final ATSScoringService atsScoringService;
+    private final KeywordMatcher keywordMatcher;
 
     @Autowired
-    private ATSScoringService atsScoringService;
+    public ResumeEnhancerService(ResumeParserService resumeParserService,
+                                  ATSScoringService atsScoringService,
+                                  KeywordMatcher keywordMatcher) {
+        this.resumeParserService = resumeParserService;
+        this.atsScoringService = atsScoringService;
+        this.keywordMatcher = keywordMatcher;
+    }
 
     /**
      * Full resume enhancement: parses resume, matches keywords, scores ATS compatibility,
@@ -34,7 +41,7 @@ public class ResumeEnhancerService {
         String resumeText = resumeParserService.parseResume(resumeFile);
 
         // 2. Match keywords
-        KeywordMatcher.MatchResult matchResult = KeywordMatcher.match(resumeText, jobDescription);
+        KeywordMatcher.MatchResult matchResult = keywordMatcher.match(resumeText, jobDescription);
 
         // 3. Calculate ATS score
         ATSScoreResponse scoreResponse = atsScoringService.calculateScore(resumeText, jobDescription);

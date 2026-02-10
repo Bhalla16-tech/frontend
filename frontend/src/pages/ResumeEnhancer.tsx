@@ -6,7 +6,6 @@ import { useState, useRef } from "react";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import { FileUploadZone } from "@/components/shared/FileUploadZone";
 import { toast } from "sonner";
-import { enhanceResume, extractErrorMessage } from "@/api/kinovekApi";
 
 interface EnhancementResult {
   atsScore: number;
@@ -20,6 +19,7 @@ const ResumeEnhancer = () => {
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [enhancementResult, setEnhancementResult] = useState<EnhancementResult | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -43,27 +43,44 @@ const ResumeEnhancer = () => {
       return;
     }
 
-    setIsEnhancing(true);
-    setEnhancementResult(null);
-    setErrorMessage(null);
-
     try {
-      const result = await enhanceResume(file, jobDescription);
-      setEnhancementResult({
-        atsScore: result.atsScore,
-        matchedKeywords: result.matchedKeywords,
-        missingKeywords: result.missingKeywords,
-        suggestions: result.suggestions,
+      setIsEnhancing(true);
+      setErrorMessage(null);
+      setSuccessMessage(null);
+      setEnhancementResult(null);
+
+      const formData = new FormData();
+      formData.append('resume', file);
+      formData.append('jobDescription', jobDescription);
+
+      const response = await fetch('http://localhost:8080/api/resume/enhance', {
+        method: 'POST',
+        body: formData,
       });
-      toast.success("Resume analysis complete!");
-      // Scroll to results
-      setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
-    } catch (error: unknown) {
-      const msg = extractErrorMessage(error, "Failed to analyze resume. Please try again.");
-      setErrorMessage(msg);
-      toast.error(msg);
-    } finally {
+
+      if (!response.ok) {
+        throw new Error('Enhancement failed');
+      }
+
+      // Download the PDF
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'Enhanced_ATS_Resume.pdf';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+
       setIsEnhancing(false);
+      setSuccessMessage('Your ATS-optimized resume has been downloaded!');
+      toast.success('Resume enhanced and downloaded!');
+    } catch (err) {
+      setIsEnhancing(false);
+      setErrorMessage('Failed to enhance resume. Please try again.');
+      toast.error('Failed to enhance resume. Please try again.');
+      console.error(err);
     }
   };
 
@@ -184,6 +201,16 @@ const ResumeEnhancer = () => {
                       <p className="font-medium text-foreground">Processing your resume...</p>
                       <p className="text-sm text-muted-foreground mt-1">Parsing content, matching keywords, and generating suggestions</p>
                     </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Success Banner */}
+              {successMessage && !isEnhancing && (
+                <div className="mt-6 p-5 rounded-xl border border-green-500/30 bg-green-500/5">
+                  <div className="flex items-center gap-3">
+                    <PartyPopper className="w-5 h-5 text-green-500 flex-shrink-0" />
+                    <p className="font-medium text-green-400">{successMessage}</p>
                   </div>
                 </div>
               )}

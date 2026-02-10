@@ -1,121 +1,59 @@
 package com.kinovek.backend.util;
 
-import java.util.*;
+import com.kinovek.backend.config.KeywordConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import java.util.*;
+import java.util.regex.Pattern;
+
+/**
+ * Matches keywords between a resume and a job description using the
+ * skill categories and synonym mappings loaded from keywords.json.
+ */
+@Component
 public class KeywordMatcher {
 
-    // Synonym map: each group of synonyms maps to a canonical form
-    private static final Map<String, String> SYNONYM_MAP = new HashMap<>();
+    private final KeywordConfig keywordConfig;
 
-    static {
-        // JavaScript synonyms
-        addSynonyms("JavaScript", "JS", "Javascript", "javascript", "ECMAScript");
-        // React synonyms
-        addSynonyms("React", "React.js", "ReactJS", "react.js");
-        // Node synonyms
-        addSynonyms("Node.js", "NodeJS", "Node", "node.js");
-        // TypeScript synonyms
-        addSynonyms("TypeScript", "TS", "Typescript", "typescript");
-        // Angular synonyms
-        addSynonyms("Angular", "AngularJS", "Angular.js");
-        // Vue synonyms
-        addSynonyms("Vue", "Vue.js", "VueJS", "vue.js");
-        // Python synonyms
-        addSynonyms("Python", "python3", "Python3");
-        // Java synonyms
-        addSynonyms("Java", "java", "Core Java");
-        // Spring Boot synonyms
-        addSynonyms("Spring Boot", "SpringBoot", "Spring-Boot");
-        // SQL synonyms
-        addSynonyms("SQL", "MySQL", "PostgreSQL", "Postgres");
-        // NoSQL synonyms
-        addSynonyms("NoSQL", "MongoDB", "Mongo");
-        // AWS synonyms
-        addSynonyms("AWS", "Amazon Web Services");
-        // CI/CD synonyms
-        addSynonyms("CI/CD", "CICD", "CI-CD", "Continuous Integration", "Continuous Deployment");
-        // Docker synonyms
-        addSynonyms("Docker", "docker", "Containerization");
-        // Kubernetes synonyms
-        addSynonyms("Kubernetes", "K8s", "k8s");
-        // REST API synonyms
-        addSynonyms("REST API", "RESTful", "REST", "RESTful API");
-        // Machine Learning synonyms
-        addSynonyms("Machine Learning", "ML", "machine learning");
-        // Artificial Intelligence synonyms
-        addSynonyms("AI", "Artificial Intelligence");
-        // HTML synonyms
-        addSynonyms("HTML", "HTML5", "html");
-        // CSS synonyms
-        addSynonyms("CSS", "CSS3", "css");
-        // Git synonyms
-        addSynonyms("Git", "GitHub", "GitLab", "git");
-        // Microservices synonyms
-        addSynonyms("Microservices", "microservices", "micro-services", "Micro Services");
-        // Full Stack synonyms
-        addSynonyms("Full Stack", "Fullstack", "Full-Stack", "full stack", "fullstack");
-        // DevOps synonyms
-        addSynonyms("DevOps", "devops", "Dev-Ops", "dev ops");
-        // Cloud synonyms
-        addSynonyms("Cloud", "cloud computing", "Cloud Computing");
-        // Azure synonyms
-        addSynonyms("Azure", "Microsoft Azure", "azure");
-        // Linux synonyms
-        addSynonyms("Linux", "linux", "Ubuntu", "ubuntu", "CentOS");
-        // Agile synonyms
-        addSynonyms("Agile", "agile", "Agile Methodology");
-        // Scrum synonyms
-        addSynonyms("Scrum", "scrum", "Scrum Master");
-        // C++ synonyms
-        addSynonyms("C++", "cpp", "CPP");
-        // C# synonyms
-        addSynonyms("C#", "CSharp", "csharp");
-        // .NET synonyms
-        addSynonyms(".NET", "dotnet", "DotNet", "ASP.NET");
-        // Go synonyms
-        addSynonyms("Go", "Golang", "golang");
-        // Rust synonyms
-        addSynonyms("Rust", "rust");
-        // Swift synonyms
-        addSynonyms("Swift", "swift");
-        // Kotlin synonyms
-        addSynonyms("Kotlin", "kotlin");
-        // GraphQL synonyms
-        addSynonyms("GraphQL", "graphql", "Graph QL");
-        // Redis synonyms
-        addSynonyms("Redis", "redis");
-        // Kafka synonyms
-        addSynonyms("Kafka", "Apache Kafka", "kafka");
-        // Jenkins synonyms
-        addSynonyms("Jenkins", "jenkins");
-        // Terraform synonyms
-        addSynonyms("Terraform", "terraform");
-        // Backend/Frontend synonyms
-        addSynonyms("Backend", "backend", "back-end", "back end");
-        addSynonyms("Frontend", "frontend", "front-end", "front end");
-        // Data Science synonyms
-        addSynonyms("Data Science", "Data Analytics", "data science", "data analytics");
-        // Deep Learning synonyms
-        addSynonyms("Deep Learning", "deep learning", "DL");
-        // NLP synonyms
-        addSynonyms("NLP", "Natural Language Processing", "nlp");
-        // Selenium synonyms
-        addSynonyms("Selenium", "selenium");
-        // Spring Framework synonyms
-        addSynonyms("Spring", "Spring Framework", "spring");
-        // Hibernate synonyms
-        addSynonyms("Hibernate", "hibernate");
-        // RabbitMQ synonyms
-        addSynonyms("RabbitMQ", "rabbitmq");
-        // Elasticsearch synonyms
-        addSynonyms("Elasticsearch", "elasticsearch", "Elastic Search");
-    }
+    // Common stop words to filter out when scanning JD text
+    private static final Set<String> STOP_WORDS = Set.of(
+            "a", "an", "the", "and", "or", "but", "in", "on", "at", "to", "for",
+            "of", "with", "by", "from", "is", "are", "was", "were", "be", "been",
+            "being", "have", "has", "had", "do", "does", "did", "will", "would",
+            "could", "should", "may", "might", "shall", "can", "need", "must",
+            "we", "you", "he", "she", "it", "they", "i", "me", "my", "your",
+            "our", "their", "this", "that", "these", "those", "not", "no",
+            "if", "then", "than", "so", "as", "up", "out", "about", "into",
+            "over", "after", "before", "between", "through", "during", "above",
+            "below", "such", "each", "every", "all", "any", "both", "few",
+            "more", "most", "other", "some", "only", "own", "same", "also",
+            "just", "very", "well", "how", "what", "which", "who", "whom",
+            "when", "where", "why", "able", "etc",
+            "experience", "years", "year", "work", "working", "role", "team",
+            "strong", "good", "excellent", "preferred", "required", "minimum",
+            "plus", "including", "using", "knowledge", "understanding",
+            "ability", "skills", "skill", "proficiency", "proficient",
+            "familiar", "familiarity", "exposure",
+            "looking", "seeking", "hiring", "join", "ideal", "candidate",
+            "responsible", "responsibilities", "opportunity", "position",
+            "company", "organization", "department", "apply", "application",
+            "benefits", "salary", "compensation", "remote", "hybrid",
+            "onsite", "full-time", "part-time", "contract", "description",
+            "qualification", "qualifications", "requirement", "requirements",
+            "deadline", "location", "based", "environment",
+            "junior", "senior", "lead", "principal", "staff", "intern",
+            "manager", "director", "associate", "analyst", "specialist",
+            "engineer", "developer", "architect", "consultant", "coordinator",
+            "officer", "executive", "administrator", "supervisor"
+    );
 
-    private static void addSynonyms(String canonical, String... synonyms) {
-        SYNONYM_MAP.put(canonical.toLowerCase(), canonical);
-        for (String synonym : synonyms) {
-            SYNONYM_MAP.put(synonym.toLowerCase(), canonical);
-        }
+    // Cache compiled word-boundary patterns
+    private final Map<String, Pattern> boundaryPatternCache = new HashMap<>();
+
+    @Autowired
+    public KeywordMatcher(KeywordConfig keywordConfig) {
+        this.keywordConfig = keywordConfig;
     }
 
     /**
@@ -139,139 +77,153 @@ public class KeywordMatcher {
 
     /**
      * Matches keywords from the job description against the resume text.
-     *
-     * @param resumeText       the extracted resume text
-     * @param jobDescription   the job description text
-     * @return MatchResult with matched keywords, missing keywords, and match percentage
      */
-    public static MatchResult match(String resumeText, String jobDescription) {
-        Set<String> jdKeywords = extractKeywords(jobDescription);
-        String resumeLower = resumeText.toLowerCase();
+    public MatchResult match(String resumeText, String jobDescription) {
+        // Step 1: Extract recognized keywords from the job description
+        // Returns canonical → displayName mapping (canonical for dedup, display for output)
+        Map<String, String> jdKeywordMap = extractKeywords(jobDescription);
 
+        // Step 2: For each JD keyword, check resume (including synonym matching)
+        String resumeLower = resumeText.toLowerCase();
         List<String> matched = new ArrayList<>();
         List<String> missing = new ArrayList<>();
 
-        for (String keyword : jdKeywords) {
-            if (isKeywordInResume(keyword, resumeLower)) {
-                matched.add(keyword);
+        for (Map.Entry<String, String> entry : jdKeywordMap.entrySet()) {
+            String canonical = entry.getKey();
+            String displayName = entry.getValue();
+
+            if (isKeywordInResume(canonical, resumeLower)) {
+                matched.add(displayName);
             } else {
-                missing.add(keyword);
+                missing.add(displayName);
             }
         }
 
-        double percentage = jdKeywords.isEmpty() ? 0 :
-                Math.round((double) matched.size() / jdKeywords.size() * 100.0 * 10.0) / 10.0;
+        // Step 3: Calculate match percentage
+        double percentage = jdKeywordMap.isEmpty() ? 0 :
+                Math.round((double) matched.size() / jdKeywordMap.size() * 100.0 * 10.0) / 10.0;
 
         return new MatchResult(matched, missing, percentage);
     }
 
     /**
-     * Extracts meaningful keywords from text (skills, technologies, tools).
+     * Extracts recognized skills/keywords from text by checking each word/phrase
+     * against the skillCategories lists and synonymMap from keywords.json.
+     *
+     * @return Map of canonical → displayName (canonical used for dedup, display for user-facing output)
      */
-    private static Set<String> extractKeywords(String text) {
-        // Common stop words to filter out
-        Set<String> stopWords = Set.of(
-                "a", "an", "the", "and", "or", "but", "in", "on", "at", "to", "for",
-                "of", "with", "by", "from", "is", "are", "was", "were", "be", "been",
-                "being", "have", "has", "had", "do", "does", "did", "will", "would",
-                "could", "should", "may", "might", "shall", "can", "need", "must",
-                "we", "you", "he", "she", "it", "they", "i", "me", "my", "your",
-                "our", "their", "this", "that", "these", "those", "not", "no",
-                "if", "then", "than", "so", "as", "up", "out", "about", "into",
-                "over", "after", "before", "between", "through", "during", "above",
-                "below", "such", "each", "every", "all", "any", "both", "few",
-                "more", "most", "other", "some", "only", "own", "same", "also",
-                "just", "very", "well", "how", "what", "which", "who", "whom",
-                "when", "where", "why", "able", "etc", "e.g", "i.e",
-                "experience", "years", "year", "work", "working", "role", "team",
-                "strong", "good", "excellent", "preferred", "required", "minimum",
-                "plus", "including", "using", "knowledge", "understanding",
-                "ability", "skills", "skill", "proficiency", "proficient",
-                "familiar", "familiarity", "exposure",
-                "looking", "seeking", "hiring", "join", "ideal", "candidate",
-                "responsible", "responsibilities", "opportunity", "position",
-                "company", "organization", "department", "apply", "application",
-                "benefits", "salary", "compensation", "remote", "hybrid",
-                "onsite", "full-time", "part-time", "contract", "description",
-                "qualification", "qualifications", "requirement", "requirements",
-                "deadline", "location", "based", "environment",
-                "junior", "senior", "lead", "principal", "staff", "intern",
-                "manager", "director", "associate", "analyst", "specialist",
-                "engineer", "developer", "architect", "consultant", "coordinator",
-                "officer", "executive", "administrator", "supervisor"
-        );
-
-        Set<String> keywords = new LinkedHashSet<>();
-
-        // First pass: check for multi-word tech terms (e.g., "Spring Boot", "REST API", "CI/CD")
+    private Map<String, String> extractKeywords(String text) {
+        // canonical → displayName
+        Map<String, String> keywords = new LinkedHashMap<>();
+        // Track which original text fragments were matched by multi-word skills
+        Set<String> consumedMultiWords = new HashSet<>();
         String textLower = text.toLowerCase();
-        for (Map.Entry<String, String> entry : SYNONYM_MAP.entrySet()) {
-            if (textLower.contains(entry.getKey())) {
-                keywords.add(entry.getValue());
+
+        // ── Pass 1: Greedy multi-word matching (longest first) ──
+        for (String multiWord : keywordConfig.getMultiWordSkills()) {
+            if (textLower.contains(multiWord)) {
+                String canonical = keywordConfig.getCanonical(multiWord);
+                if (canonical != null && !keywords.containsKey(canonical)) {
+                    String display = chooseDisplayName(canonical, multiWord);
+                    keywords.put(canonical, display);
+                    consumedMultiWords.add(multiWord);
+                }
             }
         }
 
-        // Second pass: extract individual meaningful words (3+ chars, not stop words)
-        String[] words = text.split("[\\s,;|/()\\[\\]{}]+");
+        // ── Pass 2: Single-word matching ──
+        String[] words = text.split("[\\s,;|()\\[\\]{}]+");
         for (String word : words) {
-            String cleaned = word.replaceAll("[^a-zA-Z0-9.#+\\-]", "").trim();
-            // Strip trailing periods (but keep internal ones like "Node.js", ".NET")
+            String cleaned = word.replaceAll("[^a-zA-Z0-9.#+\\-/]", "").trim();
             cleaned = cleaned.replaceAll("\\.$", "");
-            if (cleaned.length() >= 2 && !stopWords.contains(cleaned.toLowerCase())) {
-                // Check if it maps to a known synonym
-                String canonical = SYNONYM_MAP.get(cleaned.toLowerCase());
-                if (canonical != null) {
-                    keywords.add(canonical);
-                } else if (cleaned.length() >= 3 && Character.isUpperCase(cleaned.charAt(0))) {
-                    // Likely a proper noun / technology name
-                    keywords.add(cleaned);
-                }
-            }
-        }
 
-        // Third pass: remove sub-words that are parts of compound keywords
-        // e.g., remove "Spring" and "Boot" if "Spring Boot" is already matched
-        Set<String> toRemove = new HashSet<>();
-        for (String kw : keywords) {
-            if (kw.contains(" ")) {
-                // This is a compound keyword - mark its individual parts for removal
-                String[] parts = kw.split("\\s+");
-                for (String part : parts) {
-                    // Only remove if the part exists as a standalone keyword
-                    // and is NOT itself a known tech term with a different canonical meaning
-                    String partCanonical = SYNONYM_MAP.get(part.toLowerCase());
-                    if (partCanonical != null && partCanonical.equals(part)) {
-                        // The part is itself a canonical tech term — keep it
-                        continue;
+            if (cleaned.length() < 2 || STOP_WORDS.contains(cleaned.toLowerCase())) {
+                continue;
+            }
+
+            if (keywordConfig.isKnownSkill(cleaned)) {
+                String canonical = keywordConfig.getCanonical(cleaned);
+                if (canonical != null && !keywords.containsKey(canonical)) {
+                    // Check if this single word is already covered by a multi-word match
+                    boolean alreadyCovered = false;
+                    for (String mw : consumedMultiWords) {
+                        if (mw.contains(cleaned.toLowerCase())) {
+                            alreadyCovered = true;
+                            break;
+                        }
                     }
-                    toRemove.add(part);
+                    if (!alreadyCovered) {
+                        String display = chooseDisplayName(canonical, cleaned);
+                        keywords.put(canonical, display);
+                    }
                 }
             }
         }
-        keywords.removeAll(toRemove);
 
         return keywords;
     }
 
     /**
      * Checks if a keyword (or any of its synonyms) appears in the resume text.
+     * Uses word-boundary matching to prevent "Java" matching inside "JavaScript".
      */
-    private static boolean isKeywordInResume(String keyword, String resumeLower) {
-        // Direct match
-        if (resumeLower.contains(keyword.toLowerCase())) {
-            return true;
-        }
+    private boolean isKeywordInResume(String keyword, String resumeLower) {
+        // Get all synonym forms for this keyword
+        Set<String> allForms = keywordConfig.getAllForms(keyword);
+        Set<String> formsToCheck = new HashSet<>(allForms);
+        formsToCheck.add(keyword.toLowerCase());
 
-        // Check all synonyms of this keyword
-        String canonical = SYNONYM_MAP.getOrDefault(keyword.toLowerCase(), keyword);
-        for (Map.Entry<String, String> entry : SYNONYM_MAP.entrySet()) {
-            if (entry.getValue().equalsIgnoreCase(canonical)) {
-                if (resumeLower.contains(entry.getKey())) {
-                    return true;
-                }
+        for (String form : formsToCheck) {
+            if (containsWholeWord(resumeLower, form)) {
+                return true;
             }
         }
 
         return false;
     }
+
+    /**
+     * Checks if the text contains the target as a whole word/phrase,
+     * not as a substring of a larger word.
+     * e.g. "java" should NOT match inside "javascript"
+     *      "c++" should match (special chars handled)
+     *      "ci/cd" should match as-is
+     */
+    private boolean containsWholeWord(String text, String target) {
+        if (!text.contains(target)) {
+            return false;
+        }
+
+        // For multi-word phrases or phrases with special chars (ci/cd, .net, c++, c#)
+        // use regex with appropriate boundaries
+        Pattern pattern = boundaryPatternCache.computeIfAbsent(target, t -> {
+            String escaped = Pattern.quote(t);
+            // Use word boundary or start/end of string
+            // \b doesn't work well with special chars, so use lookaround
+            String regex = "(?<![a-zA-Z0-9])" + escaped + "(?![a-zA-Z0-9])";
+            return Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        });
+
+        return pattern.matcher(text).find();
+    }
+
+    /**
+     * Chooses the best display name for a keyword.
+     * Prefers the shorter, more commonly-used form.
+     * e.g., canonical "Amazon Web Services" with original "aws" → displays as "AWS"
+     *        canonical "Continuous Deployment" with original "ci/cd" → displays as "CI/CD"
+     *        canonical "Apache Kafka" with original "kafka" → displays as "Kafka"
+     */
+    private String chooseDisplayName(String canonical, String originalText) {
+        // Get the properly-cased registered form of the original text
+        // This bypasses synonym resolution, so "kafka" → "Kafka" not "Apache Kafka"
+        String registeredForm = keywordConfig.getRegisteredForm(originalText);
+
+        if (registeredForm != null && registeredForm.length() <= canonical.length()) {
+            return registeredForm;
+        }
+
+        return canonical;
+    }
+
 }

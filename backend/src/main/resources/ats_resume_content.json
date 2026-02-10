@@ -1,0 +1,496 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "ATS Resume Content Database - Professional summaries, bullet templates, action verbs, section content by industry",
+    "lastUpdated": "2026-02-10",
+    "totalIndustries": 10,
+    "totalSummaryTemplates": 40,
+    "totalBulletTemplates": 200,
+    "totalActionVerbs": 300,
+    "purpose": "Used by ResumeRewriter.java to generate and enhance resume content in ATS-friendly format"
+  },
+
+  "summaryTemplates": {
+    "IT_Software": {
+      "fresher": [
+        "Motivated {degree} graduate with strong foundation in {skill1}, {skill2}, and {skill3}. Completed {projectCount} academic projects including {projectHighlight}. Eager to apply programming skills and problem-solving abilities in an entry-level {targetRole} position.",
+        "Detail-oriented Computer Science graduate skilled in {skill1}, {skill2}, and {skill3}. Experienced in developing and testing applications through academic projects and coursework. Seeking an entry-level {targetRole} position to apply coding skills and passion for technology in a fast-paced environment.",
+        "Results-driven {degree} graduate with hands-on experience in {skill1} and {skill2} through {projectCount} projects. Strong understanding of software development lifecycle, data structures, and algorithms. Looking to contribute technical expertise as a {targetRole}.",
+        "Enthusiastic engineering graduate with practical knowledge of {skill1}, {skill2}, and {skill3}. Demonstrated ability to build full-stack applications and collaborate in team environments. Seeking to leverage technical skills and quick learning ability in a {targetRole} role."
+      ],
+      "experienced": [
+        "Results-driven {targetRole} with {yearsExp} years of experience in {skill1}, {skill2}, and {skill3}. Proven track record of delivering scalable applications and optimizing system performance. Skilled in Agile methodologies and cross-functional team collaboration.",
+        "Experienced {targetRole} with {yearsExp}+ years building production-grade applications using {skill1}, {skill2}, and {skill3}. Successfully delivered {projectCount} projects with measurable business impact including {achievementHighlight}. Strong expertise in {domain} development.",
+        "Performance-focused software professional with {yearsExp} years of hands-on experience in {skill1} and {skill2}. Improved application performance by {metric}% through code optimization and architecture improvements. Adept at mentoring junior developers and leading technical initiatives."
+      ]
+    },
+    "Mechanical_Engineering": {
+      "fresher": [
+        "Motivated Mechanical Engineering graduate with strong foundation in {skill1}, {skill2}, and {skill3}. Completed {projectCount} design projects using AutoCAD and SolidWorks. Eager to apply CAD design skills and engineering analysis knowledge in an entry-level {targetRole} position.",
+        "Detail-oriented B.Tech Mechanical Engineering graduate with hands-on experience in {skill1}, {skill2}, and product design. Proficient in SolidWorks, CATIA, and ANSYS for 3D modeling and simulation. Seeking to contribute engineering expertise as a {targetRole}.",
+        "Innovative Mechanical Engineering fresher with solid understanding of thermodynamics, fluid mechanics, and manufacturing processes. Completed internship in {companyType} gaining practical experience in {skill1}. Looking to apply technical knowledge in a {targetRole} role."
+      ],
+      "experienced": [
+        "Results-oriented Mechanical Engineer with {yearsExp} years of experience in {skill1}, {skill2}, and product development. Reduced manufacturing defects by {metric}% through process optimization. Proficient in SolidWorks, AutoCAD, and GD&T standards.",
+        "Experienced Mechanical Design Engineer with {yearsExp}+ years in CAD design, FEA analysis, and DFM. Led team of {teamSize} engineers in developing {productType} resulting in {metric}% cost reduction. Strong expertise in Six Sigma and Lean Manufacturing principles."
+      ]
+    },
+    "Civil_Engineering": {
+      "fresher": [
+        "Ambitious Civil Engineering graduate with strong foundation in structural analysis, {skill1}, and {skill2}. Proficient in AutoCAD Civil 3D, STAAD Pro, and Revit. Completed {projectCount} academic projects including {projectHighlight}. Seeking an entry-level {targetRole} position.",
+        "Detail-oriented B.Tech Civil Engineering graduate with practical knowledge of {skill1}, surveying, and construction management. Completed site internship gaining hands-on experience in {skill2}. Eager to contribute engineering skills as a {targetRole}.",
+        "Innovative Civil Engineering fresher with solid understanding of RCC design, structural analysis, and BIM. Proficient in ETABS, SAP2000, and Primavera P6. Looking to apply technical knowledge and project management skills in a {targetRole} role."
+      ],
+      "experienced": [
+        "Results-driven Civil Engineer with {yearsExp} years of experience in structural design, {skill1}, and {skill2}. Successfully managed {projectCount} construction projects worth ₹{projectValue} Cr. Proficient in STAAD Pro, ETABS, and AutoCAD Civil 3D.",
+        "Experienced Site Engineer with {yearsExp}+ years in construction management, quality control, and project planning. Completed projects {metric}% ahead of schedule through effective resource optimization. Strong expertise in IS Codes and NBC standards."
+      ]
+    },
+    "Electrical_Engineering": {
+      "fresher": [
+        "Motivated Electrical Engineering graduate with strong foundation in {skill1}, {skill2}, and control systems. Proficient in MATLAB, AutoCAD Electrical, and PLC programming. Completed {projectCount} projects including {projectHighlight}. Seeking an entry-level {targetRole} position.",
+        "Detail-oriented B.Tech Electrical Engineering graduate with practical knowledge of power systems, {skill1}, and industrial automation. Completed internship in {companyType} gaining hands-on experience in {skill2}. Eager to apply electrical design skills as a {targetRole}.",
+        "Enthusiastic Electrical Engineering fresher with solid understanding of circuit design, embedded systems, and renewable energy technologies. Proficient in ETAP, SCADA, and Siemens PLC. Looking to contribute technical expertise in a {targetRole} role."
+      ],
+      "experienced": [
+        "Results-oriented Electrical Engineer with {yearsExp} years of experience in {skill1}, {skill2}, and power distribution design. Reduced energy consumption by {metric}% through system optimization. Proficient in ETAP, AutoCAD Electrical, and PLC/SCADA systems.",
+        "Experienced Automation Engineer with {yearsExp}+ years in PLC programming, SCADA systems, and industrial control. Successfully commissioned {projectCount} automation systems reducing manual operations by {metric}%. Strong expertise in Allen Bradley and Siemens platforms."
+      ]
+    },
+    "Electronics_Communication": {
+      "fresher": [
+        "Motivated Electronics and Communication Engineering graduate with strong foundation in {skill1}, {skill2}, and embedded systems. Proficient in Embedded C, Arduino, and PCB design using Altium. Completed {projectCount} projects including {projectHighlight}. Seeking a {targetRole} position.",
+        "Detail-oriented ECE graduate with hands-on experience in {skill1}, microcontroller programming, and IoT applications. Proficient in MATLAB, LabVIEW, and VHDL. Eager to apply signal processing and embedded systems knowledge as a {targetRole}.",
+        "Innovative Electronics Engineering fresher with practical knowledge of VLSI design, {skill1}, and communication systems. Completed internship involving {skill2}. Looking to contribute hardware design expertise in a {targetRole} role."
+      ],
+      "experienced": [
+        "Results-driven Electronics Engineer with {yearsExp} years of experience in {skill1}, {skill2}, and embedded firmware development. Optimized system performance by {metric}% through hardware-software co-design. Proficient in ARM, FPGA, and RF engineering.",
+        "Experienced Embedded Systems Engineer with {yearsExp}+ years developing IoT solutions and firmware for {productType}. Led design of {projectCount} products from prototype to production. Strong expertise in RTOS, PCB design, and communication protocols."
+      ]
+    },
+    "Pharmacy": {
+      "fresher": [
+        "Recent pharmacy graduate with hands-on experience in {skill1} and {skill2}. Strong background in prescription management, patient counseling, and pharmaceutical research. Eager to contribute to a healthcare team while developing clinical pharmacy skills.",
+        "Enthusiastic B.Pharm graduate with solid foundation in pharmacology, {skill1}, and {skill2}. Completed internship in {companyType} gaining practical experience in drug dispensing and inventory management. Seeking an entry-level {targetRole} position.",
+        "Detail-oriented Pharmacy graduate with strong knowledge of pharmaceutical analysis, {skill1}, and GMP practices. Proficient in HPLC, UV Spectroscopy, and pharmaceutical formulation. Looking to apply analytical skills in a {targetRole} role.",
+        "Dynamic pharmacy graduate with strong interpersonal skills and a passion for pharmaceutical care. Skilled in {skill1}, {skill2}, and medication therapy management. Seeking an entry-level position to leverage pharmacy expertise in a clinical environment."
+      ],
+      "experienced": [
+        "Licensed Pharmacist with {yearsExp} years of experience in {skill1}, {skill2}, and patient counseling. Educated {metric}+ patients weekly on medication administration and drug interactions. Strong expertise in regulatory compliance and inventory management.",
+        "Experienced QA/QC Pharmacist with {yearsExp}+ years in pharmaceutical quality control, {skill1}, and cGMP compliance. Reduced batch rejection rate by {metric}% through process validation improvements. Proficient in HPLC, dissolution testing, and stability studies."
+      ]
+    },
+    "UI_UX_Design": {
+      "fresher": [
+        "Creative UI/UX Design graduate with strong skills in {skill1}, {skill2}, and user research. Proficient in Figma, Adobe XD, and Sketch. Designed {projectCount} user interfaces for academic and personal projects. Seeking a {targetRole} position to create impactful digital experiences.",
+        "User-centric design enthusiast with practical knowledge of wireframing, prototyping, and {skill1}. Created responsive designs that improved usability in academic projects. Proficient in {skill2} and design thinking methodology. Eager to contribute as a {targetRole}.",
+        "Detail-oriented UI/UX fresher with strong foundation in information architecture, {skill1}, and accessibility standards. Completed {projectCount} design projects with focus on mobile-first approach. Looking to apply user research skills in a {targetRole} role."
+      ],
+      "experienced": [
+        "User-focused UI/UX Designer with {yearsExp} years of experience in {skill1}, {skill2}, and design systems. Improved user engagement by {metric}% through data-driven design iterations. Proficient in Figma, Adobe Creative Suite, and usability testing methodologies.",
+        "Experienced Product Designer with {yearsExp}+ years creating intuitive interfaces for {productType}. Led design of {projectCount} products from research to launch. Increased user satisfaction score by {metric}% through iterative design improvements."
+      ]
+    },
+    "Graphic_Design_VFX": {
+      "fresher": [
+        "Creative Graphic Design graduate with expertise in {skill1}, {skill2}, and brand identity design. Proficient in Adobe Photoshop, Illustrator, and InDesign. Designed {projectCount} branding projects including {projectHighlight}. Seeking a {targetRole} position.",
+        "Innovative design graduate with strong skills in {skill1}, typography, and digital illustration. Created visual content that increased social media engagement for academic projects. Proficient in {skill2} and motion graphics. Eager to contribute as a {targetRole}.",
+        "Detail-oriented VFX/Animation graduate with practical knowledge of {skill1}, 3D modeling, and compositing. Proficient in Maya, After Effects, and Nuke. Completed {projectCount} animation projects. Looking to apply creative skills in a {targetRole} role."
+      ],
+      "experienced": [
+        "Seasoned Graphic Designer with {yearsExp} years of experience in {skill1}, {skill2}, and multi-platform visual design. Boosted brand engagement by {metric}% through creative campaign designs. Proficient in Adobe Creative Suite, Figma, and motion graphics.",
+        "Experienced VFX Artist with {yearsExp}+ years in compositing, {skill1}, and 3D visualization. Contributed to {projectCount} commercial projects. Reduced production time by {metric}% through pipeline optimization. Strong expertise in Nuke, Maya, and Houdini."
+      ]
+    },
+    "Digital_Marketing": {
+      "fresher": [
+        "Results-driven Digital Marketing graduate with practical knowledge of {skill1}, {skill2}, and content marketing. Managed social media campaigns for academic projects achieving {metric}+ reach. Proficient in Google Analytics and SEO tools. Seeking a {targetRole} position.",
+        "Enthusiastic marketing graduate with hands-on experience in {skill1}, social media management, and email marketing. Created content strategies that increased engagement by {metric}% for college events. Eager to apply data-driven marketing skills as a {targetRole}.",
+        "Analytical Digital Marketing fresher with strong foundation in SEO, {skill1}, and {skill2}. Google Analytics certified with practical experience in campaign management. Looking to leverage marketing analytics expertise in a {targetRole} role."
+      ],
+      "experienced": [
+        "Performance-driven Digital Marketer with {yearsExp} years of experience in {skill1}, {skill2}, and paid advertising. Managed ${budget}+ monthly ad budgets achieving {metric}% ROI improvement. Proficient in Google Ads, Facebook Ads Manager, and marketing automation.",
+        "Experienced SEO/SEM Specialist with {yearsExp}+ years driving organic growth and paid campaign performance. Increased organic traffic by {metric}% and reduced cost per acquisition by {metric2}%. Strong expertise in Google Analytics, SEMrush, and HubSpot."
+      ]
+    },
+    "Data_Science_AI": {
+      "fresher": [
+        "Analytically-minded {degree} graduate with strong foundation in {skill1}, {skill2}, and statistical modeling. Proficient in Python, R, and SQL. Completed {projectCount} data science projects including {projectHighlight}. Seeking a {targetRole} position.",
+        "Detail-oriented Data Science enthusiast with practical knowledge of machine learning, {skill1}, and data visualization. Built predictive models with {metric}% accuracy for academic projects. Proficient in TensorFlow, Pandas, and Tableau. Eager to contribute as a {targetRole}.",
+        "Passionate AI/ML fresher with strong skills in {skill1}, deep learning, and NLP. Developed {projectCount} ML models for real-world datasets. Proficient in Python, PyTorch, and scikit-learn. Looking to apply analytical skills in a {targetRole} role."
+      ],
+      "experienced": [
+        "Data-driven Machine Learning Engineer with {yearsExp} years of experience in {skill1}, {skill2}, and production ML systems. Deployed {projectCount} models serving {metric}+ predictions daily. Proficient in TensorFlow, AWS SageMaker, and MLOps practices.",
+        "Experienced Data Scientist with {yearsExp}+ years in predictive modeling, {skill1}, and business intelligence. Generated ${value}M+ in revenue impact through data-driven recommendations. Strong expertise in Python, SQL, Spark, and Tableau."
+      ]
+    }
+  },
+
+  "bulletTemplates": {
+    "IT_Software": {
+      "fresher_projects": [
+        "Developed {projectType} using {tech1}, {tech2}, and {tech3}, implementing {feature} for {userCount}+ users",
+        "Built RESTful APIs using {tech1} handling {requestCount}+ requests with {metric}% uptime",
+        "Implemented {feature} using {tech1} and {tech2}, reducing {process} time by {metric}%",
+        "Designed and deployed {projectType} on {platform}, achieving {metric}+ active users within {timeframe}",
+        "Created responsive front-end interface using {tech1}, {tech2}, and {tech3} with cross-browser compatibility",
+        "Integrated {service} API for {feature}, enabling {capability} for end users",
+        "Implemented JWT-based authentication and role-based access control for {projectType}",
+        "Wrote {testCount}+ unit tests using {testFramework} achieving {metric}% code coverage",
+        "Optimized database queries reducing page load time from {before}s to {after}s",
+        "Deployed application using {tool1} and {tool2} with CI/CD pipeline for automated testing"
+      ],
+      "experienced_work": [
+        "Developed and maintained {projectType} serving {userCount}+ daily active users using {tech1} and {tech2}",
+        "Led migration of {system} from {oldTech} to {newTech}, improving performance by {metric}%",
+        "Reduced API response time by {metric}% through query optimization and caching strategies",
+        "Mentored {count} junior developers on best practices in {tech1} and code review processes",
+        "Implemented microservices architecture handling {metric}+ transactions per second",
+        "Collaborated with {teamSize}-member cross-functional team to deliver {projectType} on schedule",
+        "Automated {process} workflow reducing manual effort by {metric} hours per week",
+        "Designed and implemented {feature} resulting in {metric}% improvement in user retention"
+      ]
+    },
+    "Mechanical_Engineering": {
+      "fresher_projects": [
+        "Designed {component} using SolidWorks achieving {metric}% weight reduction while maintaining structural integrity",
+        "Conducted FEA analysis on {component} using ANSYS identifying stress concentration areas and optimizing design",
+        "Created detailed 2D drawings and 3D models of {component} using AutoCAD with GD&T specifications",
+        "Performed CFD simulation of {system} using ANSYS Fluent improving thermal efficiency by {metric}%",
+        "Developed prototype of {project} using 3D printing and CNC machining techniques",
+        "Analyzed manufacturing processes and proposed DFM improvements reducing production cost by {metric}%"
+      ],
+      "experienced_work": [
+        "Led design team of {teamSize} engineers in developing {product} generating ${value} in annual revenue",
+        "Reduced manufacturing defects by {metric}% through implementation of Six Sigma DMAIC methodology",
+        "Optimized {process} cycle time by {metric}% through Lean Manufacturing principles",
+        "Managed BOM and PLM documentation for {productCount}+ product variants ensuring ISO 9001 compliance",
+        "Conducted DFMEA reducing product failure rate by {metric}% across {productLine}"
+      ]
+    },
+    "Civil_Engineering": {
+      "fresher_projects": [
+        "Designed RCC structure for {buildingType} using STAAD Pro ensuring compliance with IS 456 standards",
+        "Conducted structural analysis of {structure} using ETABS and optimized beam-column sections",
+        "Prepared detailed construction drawings using AutoCAD Civil 3D for {projectType}",
+        "Performed quantity surveying and cost estimation for {projectType} valued at ₹{value} Lakhs",
+        "Completed topographic survey using Total Station and prepared contour maps using GIS",
+        "Analyzed soil bearing capacity and recommended foundation design for {buildingType}"
+      ],
+      "experienced_work": [
+        "Managed construction of {projectType} worth ₹{value} Cr ensuring completion within budget and timeline",
+        "Supervised team of {teamSize} workers ensuring quality compliance with IS codes and NBC standards",
+        "Reduced material wastage by {metric}% through improved site management and inventory control",
+        "Prepared project schedule using Primavera P6 tracking {taskCount}+ activities with CPM methodology",
+        "Conducted quality audits ensuring compliance with LEED Green Building certification requirements"
+      ]
+    },
+    "Electrical_Engineering": {
+      "fresher_projects": [
+        "Designed electrical distribution system for {buildingType} using AutoCAD Electrical with load calculations",
+        "Programmed PLC using Ladder Logic for {application} automating {process} with {sensorCount} I/O points",
+        "Developed SCADA interface for monitoring {system} with real-time data visualization",
+        "Designed solar power system of {capacity} kW including panel layout, inverter selection, and wiring diagrams",
+        "Implemented embedded system using Arduino/ESP32 for {application} with sensor integration",
+        "Conducted power system analysis using ETAP for {facilityType} including short circuit and load flow studies"
+      ],
+      "experienced_work": [
+        "Commissioned {count}+ PLC/SCADA systems for {industryType} reducing manual operations by {metric}%",
+        "Designed electrical panels and control systems for {application} meeting IEC/NEC standards",
+        "Reduced energy consumption by {metric}% through power factor correction and load optimization",
+        "Led installation and testing of {capacity} kV substation equipment ensuring safety compliance",
+        "Managed maintenance schedule for {equipmentCount}+ electrical assets using CMMS system"
+      ]
+    },
+    "Electronics_Communication": {
+      "fresher_projects": [
+        "Designed and fabricated {circuitType} PCB using Altium Designer with {layerCount}-layer stackup",
+        "Developed embedded firmware in C for {microcontroller} implementing {protocol} communication",
+        "Built IoT-based {application} using ESP32 with MQTT protocol and cloud data logging",
+        "Implemented digital signal processing algorithm in MATLAB for {application} with {metric}% accuracy",
+        "Designed FPGA-based {application} using Verilog/VHDL synthesized on {fpgaBoard}",
+        "Created wireless communication system using {protocol} for {application} with {range}m range"
+      ],
+      "experienced_work": [
+        "Led hardware design of {product} from schematic to production achieving {metric}% first-pass yield",
+        "Developed firmware for {productCount}+ IoT devices deployed in {metric}+ locations worldwide",
+        "Optimized RF circuit design reducing signal noise by {metric} dB improving communication reliability",
+        "Managed EMC/EMI compliance testing ensuring {product} met FCC and CE certification requirements",
+        "Reduced BOM cost by {metric}% through component optimization and alternate sourcing"
+      ]
+    },
+    "Pharmacy": {
+      "fresher_projects": [
+        "Dispensed and verified {prescriptionCount}+ prescriptions daily ensuring accuracy and patient safety",
+        "Counseled patients on medication usage, dosage, side effects, and drug interactions",
+        "Conducted pharmaceutical analysis using HPLC and UV Spectroscopy for quality testing",
+        "Managed pharmacy inventory of {itemCount}+ medications ensuring proper storage conditions",
+        "Assisted in formulation development of {dosageForm} following GMP guidelines",
+        "Prepared drug information reports and participated in pharmacovigilance activities"
+      ],
+      "experienced_work": [
+        "Managed pharmacy operations dispensing {prescriptionCount}+ prescriptions daily with {metric}% accuracy",
+        "Led team of {teamSize} pharmacy technicians ensuring compliance with FDA and CDSCO regulations",
+        "Reduced medication errors by {metric}% through implementation of barcode verification system",
+        "Conducted {studyCount}+ stability studies for pharmaceutical products ensuring ICH guideline compliance",
+        "Trained {count} staff members on updated SOPs for cGMP manufacturing processes"
+      ]
+    },
+    "UI_UX_Design": {
+      "fresher_projects": [
+        "Designed user interface for {appType} app using Figma with {screenCount}+ screens and interactive prototype",
+        "Conducted user research with {participantCount} participants identifying key usability issues",
+        "Created wireframes and high-fidelity mockups for {projectType} following Material Design guidelines",
+        "Designed responsive web layout for {projectType} ensuring WCAG 2.1 accessibility compliance",
+        "Built design system with {componentCount}+ reusable components in Figma for team collaboration",
+        "Performed A/B testing on {elementCount} UI variants improving conversion rate by {metric}%"
+      ],
+      "experienced_work": [
+        "Led UI/UX redesign of {product} increasing user engagement by {metric}% and reducing bounce rate by {metric2}%",
+        "Managed design system used by {teamSize} designers across {productCount} products",
+        "Conducted usability testing with {participantCount}+ users per sprint driving iterative improvements",
+        "Designed end-to-end user flows for {featureCount} features reducing task completion time by {metric}%",
+        "Mentored {count} junior designers on UX research methodologies and design thinking"
+      ]
+    },
+    "Graphic_Design_VFX": {
+      "fresher_projects": [
+        "Designed brand identity including logo, color palette, and typography for {clientType}",
+        "Created {count}+ social media graphics for marketing campaigns using Photoshop and Illustrator",
+        "Developed motion graphics for {projectType} using After Effects with {duration}-second animations",
+        "Designed print materials including brochures, flyers, and banners for {eventType}",
+        "Created 3D models and renders of {subject} using Maya/Blender with V-Ray rendering",
+        "Produced video content using Premiere Pro and DaVinci Resolve for {platform}"
+      ],
+      "experienced_work": [
+        "Led visual design for {brandCount}+ brand campaigns increasing brand recognition by {metric}%",
+        "Created visual content strategy generating {metric}+ impressions across social media platforms",
+        "Designed {count}+ marketing collaterals per month maintaining brand consistency guidelines",
+        "Reduced design production time by {metric}% through template creation and asset library management",
+        "Directed photo shoots and video production for {clientType} managing ${budget} production budget"
+      ]
+    },
+    "Digital_Marketing": {
+      "fresher_projects": [
+        "Managed social media accounts for {brand} growing follower base by {metric}% in {timeframe}",
+        "Executed SEO strategy for {website} improving organic search ranking from page {before} to page {after}",
+        "Created and scheduled {count}+ content pieces per month across {platformCount} platforms",
+        "Analyzed campaign performance using Google Analytics generating weekly insight reports",
+        "Designed email marketing campaigns achieving {metric}% open rate and {metric2}% click-through rate",
+        "Optimized Google Ads campaigns reducing cost per click by {metric}% while maintaining conversions"
+      ],
+      "experienced_work": [
+        "Managed ${budget}+ monthly ad budget across Google, Facebook, and LinkedIn generating {metric}x ROAS",
+        "Increased organic traffic by {metric}% through comprehensive SEO strategy and content marketing",
+        "Led team of {teamSize} marketers managing {campaignCount}+ campaigns per quarter",
+        "Reduced customer acquisition cost by {metric}% through funnel optimization and A/B testing",
+        "Developed marketing automation workflows in {tool} nurturing {leadCount}+ leads monthly"
+      ]
+    },
+    "Data_Science_AI": {
+      "fresher_projects": [
+        "Built predictive model using {algorithm} achieving {metric}% accuracy on {dataset} dataset",
+        "Performed exploratory data analysis on {recordCount}+ records using Python and Pandas",
+        "Created interactive dashboard in Tableau/Power BI visualizing {metric} key business metrics",
+        "Implemented NLP pipeline for {application} using {library} with {metric}% F1 score",
+        "Developed recommendation system using collaborative filtering serving {userCount} users",
+        "Cleaned and preprocessed {recordCount}+ data records handling missing values and outliers"
+      ],
+      "experienced_work": [
+        "Deployed {modelCount}+ ML models to production serving {metric}+ predictions daily using {platform}",
+        "Built data pipeline processing {volume}+ records daily using Spark and Kafka",
+        "Improved model accuracy from {before}% to {after}% through feature engineering and hyperparameter tuning",
+        "Generated ${value}M+ in revenue impact through data-driven pricing and recommendation models",
+        "Led team of {teamSize} data scientists on {projectType} delivering {metric}% improvement in {kpi}"
+      ]
+    }
+  },
+
+  "actionVerbsByIndustry": {
+    "IT_Software": {
+      "development": ["Developed", "Built", "Engineered", "Programmed", "Coded", "Implemented", "Created", "Designed", "Architected", "Constructed"],
+      "optimization": ["Optimized", "Refactored", "Streamlined", "Accelerated", "Enhanced", "Improved", "Upgraded", "Tuned", "Boosted", "Maximized"],
+      "deployment": ["Deployed", "Launched", "Released", "Shipped", "Delivered", "Published", "Configured", "Provisioned", "Migrated", "Containerized"],
+      "testing": ["Tested", "Debugged", "Validated", "Verified", "Automated", "Monitored", "Audited", "Benchmarked", "Profiled", "Diagnosed"],
+      "collaboration": ["Collaborated", "Coordinated", "Partnered", "Integrated", "Merged", "Synchronized", "Aligned", "Facilitated", "Contributed", "Supported"]
+    },
+    "Mechanical_Engineering": {
+      "design": ["Designed", "Modeled", "Drafted", "Sketched", "Prototyped", "Conceptualized", "Engineered", "Fabricated", "Assembled", "Constructed"],
+      "analysis": ["Analyzed", "Simulated", "Calculated", "Evaluated", "Tested", "Validated", "Measured", "Inspected", "Assessed", "Diagnosed"],
+      "manufacturing": ["Manufactured", "Machined", "Welded", "Molded", "Cast", "Stamped", "Forged", "Extruded", "Finished", "Processed"],
+      "improvement": ["Optimized", "Reduced", "Minimized", "Improved", "Enhanced", "Streamlined", "Standardized", "Automated", "Simplified", "Eliminated"]
+    },
+    "Civil_Engineering": {
+      "design": ["Designed", "Planned", "Surveyed", "Estimated", "Drafted", "Modeled", "Engineered", "Calculated", "Specified", "Detailed"],
+      "construction": ["Constructed", "Supervised", "Managed", "Monitored", "Inspected", "Coordinated", "Executed", "Oversaw", "Directed", "Commissioned"],
+      "analysis": ["Analyzed", "Assessed", "Evaluated", "Investigated", "Tested", "Measured", "Reviewed", "Audited", "Verified", "Validated"]
+    },
+    "Electrical_Engineering": {
+      "design": ["Designed", "Engineered", "Wired", "Installed", "Configured", "Programmed", "Calibrated", "Commissioned", "Integrated", "Specified"],
+      "analysis": ["Analyzed", "Tested", "Measured", "Diagnosed", "Troubleshot", "Monitored", "Evaluated", "Inspected", "Validated", "Verified"],
+      "automation": ["Automated", "Programmed", "Controlled", "Regulated", "Optimized", "Interfaced", "Networked", "Synchronized", "Sequenced", "Modulated"]
+    },
+    "Electronics_Communication": {
+      "hardware": ["Designed", "Fabricated", "Assembled", "Soldered", "Debugged", "Prototyped", "Tested", "Characterized", "Integrated", "Routed"],
+      "firmware": ["Developed", "Programmed", "Coded", "Compiled", "Flashed", "Configured", "Optimized", "Debugged", "Interfaced", "Implemented"],
+      "analysis": ["Analyzed", "Simulated", "Measured", "Characterized", "Validated", "Verified", "Profiled", "Benchmarked", "Calibrated", "Assessed"]
+    },
+    "Pharmacy": {
+      "clinical": ["Dispensed", "Counseled", "Administered", "Prescribed", "Reviewed", "Monitored", "Assessed", "Evaluated", "Screened", "Interpreted"],
+      "quality": ["Validated", "Tested", "Analyzed", "Inspected", "Audited", "Documented", "Verified", "Calibrated", "Standardized", "Certified"],
+      "management": ["Managed", "Supervised", "Coordinated", "Organized", "Maintained", "Controlled", "Processed", "Distributed", "Inventoried", "Ordered"]
+    },
+    "UI_UX_Design": {
+      "design": ["Designed", "Created", "Crafted", "Prototyped", "Wireframed", "Illustrated", "Visualized", "Conceptualized", "Iterated", "Refined"],
+      "research": ["Researched", "Interviewed", "Surveyed", "Tested", "Analyzed", "Mapped", "Observed", "Synthesized", "Documented", "Evaluated"],
+      "collaboration": ["Collaborated", "Presented", "Facilitated", "Coordinated", "Aligned", "Communicated", "Advocated", "Mentored", "Led", "Workshopped"]
+    },
+    "Graphic_Design_VFX": {
+      "creative": ["Designed", "Illustrated", "Created", "Composed", "Animated", "Rendered", "Modeled", "Sculpted", "Textured", "Storyboarded"],
+      "production": ["Produced", "Edited", "Composited", "Retouched", "Color-graded", "Exported", "Delivered", "Published", "Printed", "Packaged"],
+      "brand": ["Branded", "Conceptualized", "Art-directed", "Styled", "Curated", "Refreshed", "Unified", "Standardized", "Elevated", "Repositioned"]
+    },
+    "Digital_Marketing": {
+      "growth": ["Grew", "Increased", "Boosted", "Expanded", "Scaled", "Amplified", "Accelerated", "Maximized", "Generated", "Acquired"],
+      "content": ["Created", "Published", "Authored", "Curated", "Scheduled", "Produced", "Developed", "Optimized", "Distributed", "Promoted"],
+      "analytics": ["Analyzed", "Tracked", "Measured", "Reported", "Forecasted", "Segmented", "Attributed", "Tested", "Benchmarked", "Audited"]
+    },
+    "Data_Science_AI": {
+      "modeling": ["Built", "Trained", "Deployed", "Tuned", "Validated", "Evaluated", "Predicted", "Classified", "Clustered", "Segmented"],
+      "data": ["Analyzed", "Processed", "Cleaned", "Transformed", "Extracted", "Aggregated", "Queried", "Visualized", "Explored", "Merged"],
+      "engineering": ["Engineered", "Automated", "Pipelined", "Orchestrated", "Scaled", "Optimized", "Monitored", "Versioned", "Containerized", "Served"]
+    }
+  },
+
+  "educationFormats": {
+    "degreeAbbreviations": {
+      "B.Tech": "Bachelor of Technology",
+      "B.E.": "Bachelor of Engineering",
+      "M.Tech": "Master of Technology",
+      "M.E.": "Master of Engineering",
+      "B.Sc": "Bachelor of Science",
+      "M.Sc": "Master of Science",
+      "BCA": "Bachelor of Computer Applications",
+      "MCA": "Master of Computer Applications",
+      "MBA": "Master of Business Administration",
+      "BBA": "Bachelor of Business Administration",
+      "B.Pharm": "Bachelor of Pharmacy",
+      "M.Pharm": "Master of Pharmacy",
+      "PharmD": "Doctor of Pharmacy",
+      "B.Des": "Bachelor of Design",
+      "M.Des": "Master of Design",
+      "B.Arch": "Bachelor of Architecture",
+      "B.Com": "Bachelor of Commerce",
+      "M.Com": "Master of Commerce",
+      "BA": "Bachelor of Arts",
+      "MA": "Master of Arts",
+      "PhD": "Doctor of Philosophy",
+      "Diploma": "Diploma"
+    },
+    "scoreFormats": {
+      "cgpa_10": "CGPA: {score}/10",
+      "cgpa_4": "GPA: {score}/4.0",
+      "percentage": "{score}%",
+      "firstClass": "First Class with Distinction",
+      "note": "Include score only if CGPA >= 7.0/10 or >= 70%. Omit if lower."
+    },
+    "relevantCoursework": {
+      "IT_Software": ["Data Structures & Algorithms", "Object-Oriented Programming", "Database Management Systems", "Operating Systems", "Computer Networks", "Software Engineering", "Web Technologies", "Machine Learning", "Artificial Intelligence", "Cloud Computing"],
+      "Mechanical_Engineering": ["Engineering Mechanics", "Thermodynamics", "Fluid Mechanics", "Machine Design", "Manufacturing Technology", "Heat Transfer", "CAD/CAM", "Finite Element Analysis", "Robotics", "Material Science"],
+      "Civil_Engineering": ["Structural Analysis", "Reinforced Concrete Design", "Soil Mechanics", "Surveying", "Construction Management", "Transportation Engineering", "Environmental Engineering", "Hydraulics", "Steel Structure Design", "Earthquake Engineering"],
+      "Electrical_Engineering": ["Circuit Theory", "Control Systems", "Power Systems", "Electrical Machines", "Signal Processing", "Microprocessors", "Power Electronics", "Instrumentation", "Renewable Energy", "Embedded Systems"],
+      "Electronics_Communication": ["Digital Electronics", "Analog Electronics", "Microprocessors", "Signal Processing", "Communication Systems", "VLSI Design", "Embedded Systems", "Antenna Design", "Optical Communication", "IoT"],
+      "Pharmacy": ["Pharmacology", "Pharmaceutical Chemistry", "Pharmacognosy", "Pharmaceutics", "Pharmaceutical Analysis", "Pharmacokinetics", "Clinical Pharmacy", "Pharmaceutical Biotechnology", "Hospital Pharmacy", "Drug Regulatory Affairs"]
+    }
+  },
+
+  "softSkillsPhrases": {
+    "communication": ["Excellent verbal and written communication skills", "Strong presentation and public speaking abilities", "Effective cross-functional team communication"],
+    "teamwork": ["Proven ability to collaborate in diverse team environments", "Strong team player with experience in Agile/Scrum teams", "Effective collaboration with cross-functional stakeholders"],
+    "leadership": ["Demonstrated leadership in academic and project settings", "Experience mentoring and guiding team members", "Strong organizational and delegation skills"],
+    "problemSolving": ["Strong analytical and problem-solving abilities", "Critical thinking with data-driven decision making", "Creative approach to technical challenges"],
+    "adaptability": ["Quick learner with ability to adapt to new technologies", "Flexible and adaptable in fast-paced environments", "Self-motivated with strong time management skills"],
+    "note": "Include 2-3 soft skills maximum. Always place after technical skills."
+  },
+
+  "certificationsByIndustry": {
+    "IT_Software": ["AWS Certified Cloud Practitioner", "AWS Certified Solutions Architect", "Azure Fundamentals (AZ-900)", "Google Cloud Certified", "Certified Kubernetes Administrator (CKA)", "Oracle Certified Java Programmer", "CompTIA A+", "CompTIA Security+", "Certified Scrum Master (CSM)", "ISTQB Foundation Level", "Salesforce Certified Administrator", "GitHub Foundations"],
+    "Mechanical_Engineering": ["Certified SolidWorks Associate (CSWA)", "Certified SolidWorks Professional (CSWP)", "AutoCAD Certified Professional", "Six Sigma Green Belt", "Six Sigma Black Belt", "PMP Certification", "CATIA Certified", "ANSYS Certified", "ISO 9001 Lead Auditor", "Lean Manufacturing Certified"],
+    "Civil_Engineering": ["AutoCAD Certified Professional", "Revit Certified Professional", "LEED Green Associate", "LEED AP", "PMP Certification", "Primavera P6 Certified", "STAAD Pro Certified", "BIM Manager Certification", "ISO 14001 Auditor", "NDT Level II"],
+    "Electrical_Engineering": ["Licensed Electrical Engineer", "Certified Energy Manager (CEM)", "Siemens PLC Certified", "Allen Bradley PLC Certified", "AutoCAD Electrical Certified", "ETAP Certified", "NABCEP Solar Certified", "OSHA Safety Certification", "ISA Certified Automation Professional"],
+    "Electronics_Communication": ["Certified Embedded Systems Engineer", "PCB Design Certification (IPC)", "ARM Certified Engineer", "Cisco CCNA", "CompTIA Network+", "LabVIEW Certified Developer", "FPGA Design Certification", "IoT Certified Professional"],
+    "Pharmacy": ["Registered Pharmacist License", "PharmD", "Good Manufacturing Practices (GMP) Certified", "Clinical Research Certified", "Pharmacovigilance Certification", "HPLC Certification", "FDA Regulatory Affairs Certified", "ICH GCP Certified", "Drug Safety Associate Certification"],
+    "UI_UX_Design": ["Google UX Design Certificate", "Interaction Design Foundation Certification", "Nielsen Norman Group UX Certification", "Adobe Certified Professional", "Figma Professional Certificate", "Certified Usability Analyst (CUA)", "HFI Certified Usability Professional"],
+    "Graphic_Design_VFX": ["Adobe Certified Professional (Photoshop)", "Adobe Certified Professional (Illustrator)", "Adobe Certified Professional (InDesign)", "Autodesk Maya Certified", "Foundry Nuke Certified", "Canva Pro Certification", "Google Ads Display Certification"],
+    "Digital_Marketing": ["Google Analytics Certification", "Google Ads Certification", "Meta Certified Digital Marketing Associate", "HubSpot Inbound Marketing Certification", "SEMrush SEO Certification", "Hootsuite Social Marketing Certification", "Mailchimp Email Marketing Certification", "Content Marketing Institute Certification"],
+    "Data_Science_AI": ["Google Data Analytics Certificate", "IBM Data Science Professional Certificate", "TensorFlow Developer Certificate", "AWS Certified Machine Learning", "Azure AI Engineer Associate", "Databricks Certified", "Tableau Desktop Certified", "SAS Certified Data Scientist"]
+  },
+
+  "sectionContentRules": {
+    "summary": {
+      "maxSentences": 3,
+      "maxWords": 60,
+      "mustInclude": ["target role or degree", "top 2-3 skills", "one achievement or metric"],
+      "neverUse": ["I", "me", "my", "hardworking individual", "looking for a challenging role", "seeking opportunities to grow", "team player"],
+      "startWith": ["Results-driven", "Motivated", "Detail-oriented", "Experienced", "Innovative", "Analytical", "Creative", "Performance-focused", "User-centric", "Data-driven"]
+    },
+    "experience": {
+      "bulletFormat": "Action Verb + What You Did + Quantified Result",
+      "maxBulletsPerJob": 6,
+      "minBulletsPerJob": 2,
+      "startEveryBulletWithActionVerb": true,
+      "includeMetricsInAtLeast50Percent": true,
+      "neverStartWith": ["Responsible for", "Helped", "Assisted with", "Tasked with", "Handled", "Worked on", "Was involved in", "Participated in"],
+      "dateFormat": "Month YYYY - Month YYYY",
+      "currentJobEnd": "Present"
+    },
+    "skills": {
+      "format": "CategoryName: Skill1, Skill2, Skill3",
+      "maxCategories": 6,
+      "maxSkillsPerCategory": 10,
+      "separatorBetweenSkills": ", ",
+      "includeBothAcronymAndFullForm": true,
+      "examplePairs": [
+        "Search Engine Optimization (SEO)",
+        "Continuous Integration/Continuous Deployment (CI/CD)",
+        "Finite Element Analysis (FEA)",
+        "Good Manufacturing Practices (GMP)"
+      ]
+    },
+    "education": {
+      "format": "Degree in Major | Institution Name | City, State | Year",
+      "includeScoreIf": "CGPA >= 7.0 or Percentage >= 70%",
+      "includeRelevantCoursework": "only if fresher and space available",
+      "maxEntries": 3
+    },
+    "projects": {
+      "format": "Project Name | Tech Stack Used",
+      "maxBulletsPerProject": 3,
+      "includeGitHubLink": "if available",
+      "fresherMinProjects": 2,
+      "fresherMaxProjects": 4
+    },
+    "certifications": {
+      "format": "Certification Name - Issuing Organization (Year)",
+      "maxEntries": 5,
+      "sortBy": "relevance to target job"
+    }
+  },
+
+  "indianResumeSpecifics": {
+    "dateOfBirth": "DO NOT include - not required and wastes space",
+    "gender": "DO NOT include",
+    "maritalStatus": "DO NOT include",
+    "fathersName": "DO NOT include",
+    "passport": "DO NOT include unless international role",
+    "photo": "DO NOT include - ATS cannot read images",
+    "declaration": "DO NOT include - outdated practice",
+    "signature": "DO NOT include in PDF",
+    "permanentAddress": "DO NOT include - City, State only",
+    "nationality": "DO NOT include unless applying abroad",
+    "languages": "Include only if role requires multilingual skills",
+    "hobbies": "Include only if directly relevant to the role",
+    "references": "DO NOT include - 'Available upon request' is also unnecessary",
+    "note": "Indian resume culture often includes DOB, photo, father's name, declaration etc. These are all outdated for ATS resumes and should be removed during enhancement."
+  }
+}
