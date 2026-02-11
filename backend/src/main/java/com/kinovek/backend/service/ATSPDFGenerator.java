@@ -13,6 +13,8 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.pdf.draw.LineSeparator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,8 @@ import java.util.Map;
 
 @Service
 public class ATSPDFGenerator {
+
+    private static final Logger log = LoggerFactory.getLogger(ATSPDFGenerator.class);
 
     @Autowired
     private ATSResumeConfig config;
@@ -65,6 +69,7 @@ public class ATSPDFGenerator {
      * @return byte[] of the generated PDF
      */
     public byte[] generateATSResume(Map<String, Object> resumeData, boolean isFresher) {
+        log.info("=== PDF GENERATOR: Starting | isFresher={} | sections={} ===", isFresher, resumeData.keySet());
         initFonts();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -149,10 +154,12 @@ public class ATSPDFGenerator {
             }
 
             document.close();
+            log.info("=== PDF GENERATOR: Document closed ===");
         } catch (DocumentException e) {
             throw new RuntimeException("Failed to generate ATS resume PDF: " + e.getMessage(), e);
         }
 
+        log.info("=== PDF GENERATOR: Complete | {} bytes ===", baos.size());
         return baos.toByteArray();
     }
 

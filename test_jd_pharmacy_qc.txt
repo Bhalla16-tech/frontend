@@ -1,0 +1,18 @@
+Job Title: Quality Control Analyst
+Company: Dr. Reddy's Laboratories
+Location: Hyderabad
+
+Requirements:
+- B.Pharm or M.Pharm degree
+- Knowledge of HPLC, GC, UV Spectroscopy
+- Understanding of GMP and GLP practices
+- Experience with pharmaceutical documentation
+- Knowledge of ICH guidelines
+- Familiarity with LIMS systems
+- Understanding of validation protocols (IQ, OQ, PQ)
+- Knowledge of stability testing as per ICH Q1A
+
+Good to Have:
+- Pharmacovigilance knowledge
+- Regulatory affairs experience
+- SAP knowledge

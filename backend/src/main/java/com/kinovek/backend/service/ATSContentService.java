@@ -2,6 +2,8 @@ package com.kinovek.backend.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import jakarta.annotation.PostConstruct;
 import java.io.InputStream;
@@ -9,6 +11,8 @@ import java.util.*;
 
 @Service
 public class ATSContentService {
+
+    private static final Logger log = LoggerFactory.getLogger(ATSContentService.class);
 
     private JsonNode content;
 
@@ -30,6 +34,7 @@ public class ATSContentService {
 
     // ===== DETECT INDUSTRY FROM JOB DESCRIPTION =====
     public String detectIndustry(String jobDescription) {
+        log.info("=== INDUSTRY DETECTION: JD length={} ===", jobDescription.length());
         String jdLower = jobDescription.toLowerCase();
 
         Map<String, List<String>> industryKeywords = new LinkedHashMap<>();
@@ -59,6 +64,7 @@ public class ATSContentService {
                 bestMatch = entry.getKey();
             }
         }
+        log.info("=== INDUSTRY DETECTION: Result={} (score={}) ===", bestMatch, highestScore);
         return bestMatch;
     }
 

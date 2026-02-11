@@ -5,6 +5,8 @@ import com.kinovek.backend.dto.ApiResponse;
 import com.kinovek.backend.dto.EnhanceResponse;
 import com.kinovek.backend.service.*;
 import com.kinovek.backend.util.KeywordMatcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/resume")
 public class ResumeController {
+
+    private static final Logger log = LoggerFactory.getLogger(ResumeController.class);
 
     @Autowired
     private ResumeEnhancerService resumeEnhancerService;
@@ -119,12 +123,19 @@ public class ResumeController {
     public ResponseEntity<?> enhanceResumePdf(
             @RequestParam("resume") MultipartFile resumeFile,
             @RequestParam("jobDescription") String jobDescription) {
+        log.info("\n========================================");
+        log.info("=== ENHANCE-PDF REQUEST RECEIVED ===");
+        log.info("File: {} | Size: {} bytes | JD length: {} chars",
+                resumeFile.getOriginalFilename(), resumeFile.getSize(), jobDescription.length());
+        log.info("========================================");
         try {
             // Step 1: Extract text from uploaded PDF/DOCX
             String resumeText = resumeParserService.parseResume(resumeFile);
+            log.info("=== STEP 1 DONE: Resume text extracted | {} chars ===", resumeText.length());
 
             // Step 2: Parse text into structured data
             Map<String, Object> originalResumeData = resumeTextParserService.parseResumeText(resumeText);
+            log.info("=== STEP 2 DONE: Parsed into sections: {} ===", originalResumeData.keySet());
 
             // Step 3: Analyze keywords
             KeywordMatcher.MatchResult matchResult = keywordMatcher.match(resumeText, jobDescription);
@@ -132,14 +143,19 @@ public class ResumeController {
             analysisResults.put("matchedKeywords", matchResult.getMatchedKeywords());
             analysisResults.put("missingKeywords", matchResult.getMissingKeywords());
             analysisResults.put("matchPercentage", matchResult.getMatchPercentage());
+            log.info("=== STEP 3 DONE: Keywords matched={} missing={} match%={} ===",
+                    matchResult.getMatchedKeywords().size(), matchResult.getMissingKeywords().size(),
+                    matchResult.getMatchPercentage());
 
             // Step 4: Enhance the resume
             Map<String, Object> enhancedData = resumeRewriter.enhanceResume(
                     originalResumeData, analysisResults, jobDescription);
+            log.info("=== STEP 4 DONE: Resume enhanced | sections: {} ===", enhancedData.keySet());
 
             // Step 5: Generate ATS PDF
             boolean isFresher = (boolean) enhancedData.getOrDefault("isFresher", true);
             byte[] pdfBytes = atsPdfGenerator.generateATSResume(enhancedData, isFresher);
+            log.info("=== STEP 5 DONE: PDF generated | {} bytes | isFresher={} ===", pdfBytes.length, isFresher);
 
             // Step 6: Build filename from candidate name
             Map<String, Object> personalInfo = (Map<String, Object>) enhancedData.get("personalInfo");

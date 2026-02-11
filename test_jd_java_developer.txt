@@ -1,0 +1,24 @@
+Job Title: Junior Java Developer
+Company: Infosys
+Location: Hyderabad
+
+We are looking for a Junior Java Developer to join our team.
+
+Required Skills:
+- Strong knowledge of Java, Spring Boot, and REST APIs
+- Experience with microservices architecture
+- Proficiency in SQL and database management (MySQL, PostgreSQL)
+- Familiarity with Git, Docker, and CI/CD pipelines
+- Understanding of Agile/Scrum methodology
+- Experience with cloud platforms (AWS or Azure)
+- Knowledge of data structures and algorithms
+- Unit testing with JUnit and Mockito
+
+Good to Have:
+- Experience with React or Angular for frontend
+- Knowledge of Kubernetes
+- Familiarity with message queues (Kafka, RabbitMQ)
+
+Qualifications:
+- B.Tech/B.E. in Computer Science or related field
+- 0-2 years of experience

@@ -53,7 +53,7 @@ const ResumeEnhancer = () => {
       formData.append('resume', file);
       formData.append('jobDescription', jobDescription);
 
-      const response = await fetch('http://localhost:8080/api/resume/enhance', {
+      const response = await fetch('http://localhost:8080/api/v1/resume/enhance-pdf', {
         method: 'POST',
         body: formData,
       });

@@ -1,0 +1,98 @@
+Rajesh Krishnamurthy
+rajesh.k@gmail.com | +91-99887-76655 | Bangalore, Karnataka
+linkedin.com/in/rajeshk | github.com/rajeshk
+
+Summary
+Senior Software Architect with 15 years of experience in enterprise software development.
+
+Education
+B.Tech in Computer Science
+IIT Madras | 2005 - 2009 | CGPA: 8.9/10
+
+M.Tech in Software Engineering
+IIT Bombay | 2009 - 2011 | CGPA: 9.1/10
+
+Technical Skills
+Languages: Java, Python, Go, Kotlin, Scala, C++
+Frameworks: Spring Boot, Spring Cloud, Hibernate, Django, Flask
+Frontend: React, Angular, Vue.js, TypeScript
+Databases: MySQL, PostgreSQL, MongoDB, Redis, Cassandra, DynamoDB
+Cloud: AWS, Azure, GCP
+DevOps: Docker, Kubernetes, Jenkins, Terraform, Ansible
+Tools: Git, Jira, Confluence, IntelliJ, VS Code
+
+Work Experience
+Principal Software Architect - Amazon (Jan 2021 - Present)
+- Responsible for designing microservices architecture for payment systems
+- Helped migrate monolithic application to microservices
+- Worked on performance optimization reducing latency by 40%
+- Led team of 15 engineers across 3 time zones
+- Implemented event-driven architecture using Apache Kafka
+- Designed API gateway handling 10M requests per day
+
+Senior Software Engineer - Microsoft (Jun 2017 - Dec 2020)
+- Responsible for building cloud-native applications on Azure
+- Helped with Azure DevOps pipeline implementation
+- Worked on distributed caching solutions using Redis
+- Tasked with building CI/CD pipelines for 20+ microservices
+- Mentored 8 junior developers
+- Participated in code review process for critical components
+
+Software Engineer - Infosys (Mar 2014 - May 2017)
+- Responsible for developing REST APIs using Spring Boot
+- Helped in database migration from Oracle to PostgreSQL
+- Worked on automated testing framework reducing QA time by 60%
+- Assisted with performance testing using JMeter
+- Built monitoring dashboards with Grafana and Prometheus
+
+Junior Software Engineer - Wipro (Jul 2011 - Feb 2014)
+- Responsible for maintaining legacy Java applications
+- Helped with bug fixing and patch deployment
+- Worked on data migration scripts
+- Participated in daily stand-ups and sprint planning
+- Assisted in client communication and requirement gathering
+
+Projects
+1. Distributed Payment Gateway
+   - Built payment processing system handling 50K transactions per minute
+   - Used Java, Spring Boot, Kafka, PostgreSQL
+   - Implemented circuit breaker pattern for fault tolerance
+
+2. Real-Time Analytics Dashboard
+   - Developed analytics platform processing 1TB of data daily
+   - Used Python, Apache Spark, Elasticsearch, Kibana
+   - Reduced report generation time from 2 hours to 15 minutes
+
+3. Cloud Migration Framework
+   - Created automated cloud migration tool for legacy applications
+   - Used Terraform, AWS CDK, Python
+   - Migrated 30+ applications from on-premise to AWS
+
+4. AI-Powered Code Review System
+   - Built ML model for automated code review suggestions
+   - Used Python, TensorFlow, NLP techniques
+   - Reduced code review time by 35%
+
+5. Microservices Orchestration Platform
+   - Designed service mesh using Istio and Kubernetes
+   - Implemented observability with Jaeger, Prometheus, and Grafana
+   - Handled deployment of 50+ microservices
+
+Certifications
+- AWS Solutions Architect Professional
+- Azure Solutions Architect Expert
+- Google Cloud Professional Cloud Architect
+- Certified Kubernetes Administrator (CKA)
+- Oracle Certified Java SE 11 Developer
+
+Achievements
+- Best Architect Award at Amazon 2023
+- Patent filed for distributed transaction handling system
+- Speaker at AWS re:Invent 2022 and Google Cloud Next 2023
+- Published 3 technical papers on microservices architecture
+- Open source contributor to Spring Cloud and Apache Kafka
+
+Publications
+1. "Scalable Microservices Patterns for Enterprise Applications" - IEEE 2022
+2. "Event-Driven Architecture: A Practical Guide" - ACM 2021
+3. "Cloud Migration Strategies for Legacy Systems" - Springer 2020

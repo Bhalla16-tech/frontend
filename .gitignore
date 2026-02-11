@@ -15,3 +15,11 @@ test_resume.txt
 test_output.pdf
 test_output2.pdf
 test_ats_output.pdf
+
+# Test artifacts
+test_*.pdf
+test6*.pdf
+output_*.pdf
+output_*.json
+enhance_result.json
+enhanced_resume.pdf

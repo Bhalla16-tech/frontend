@@ -1,6 +1,8 @@
 package com.kinovek.backend.service;
 
 import com.kinovek.backend.config.KeywordConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ import java.util.regex.Pattern;
  */
 @Service
 public class ResumeRewriter {
+
+    private static final Logger log = LoggerFactory.getLogger(ResumeRewriter.class);
 
     @Autowired
     private KeywordConfig keywordConfig;
@@ -52,36 +56,49 @@ public class ResumeRewriter {
             Map<String, Object> analysisResults,
             String jobDescription) {
 
+        log.info("=== REWRITER: Enhancing resume ===");
+        log.info("Original data keys: {} | JD length: {}", originalResumeData.keySet(), jobDescription.length());
+
         // Deep copy to avoid mutating the original
         Map<String, Object> enhanced = deepCopy(originalResumeData);
 
         try {
             // 1. Detect industry
             String industry = atsContentService.detectIndustry(jobDescription);
+            log.info("=== REWRITER STEP 1: Industry detected: {} ===", industry);
 
             // 7. Determine fresher vs experienced (need this early for other decisions)
             boolean isFresher = determineIsFresher(enhanced);
             enhanced.put("isFresher", isFresher);
+            log.info("=== REWRITER STEP 2: isFresher={} ===", isFresher);
 
             // 2. Add missing keywords to skills
             List<String> missingKeywords = getStringList(analysisResults, "missingKeywords");
             List<String> matchedKeywords = getStringList(analysisResults, "matchedKeywords");
+            log.info("=== REWRITER STEP 3: Missing keywords: {} | Matched: {} ===", missingKeywords.size(), matchedKeywords.size());
             addMissingKeywordsToSkills(enhanced, missingKeywords);
+            log.info("Missing keywords added to skills");
 
             // 3. Enhance professional summary
             enhanceSummary(enhanced, industry, isFresher, matchedKeywords, jobDescription);
+            log.info("=== REWRITER STEP 4: Summary enhanced ===");
 
             // 4. Fix bullet points
             fixBulletPoints(enhanced, industry);
+            log.info("=== REWRITER STEP 5: Bullet points fixed ===");
 
             // 5. Remove Indian-specific items
             removeIndianSpecificItems(enhanced);
+            log.info("=== REWRITER STEP 6: Indian-specific items removed ===");
 
             // 6. Ensure all sections have content
             ensureSectionContent(enhanced, isFresher, matchedKeywords);
+            log.info("=== REWRITER STEP 7: Section content ensured ===");
 
             // 8. Suggest certifications
             suggestCertifications(enhanced, industry);
+            log.info("=== REWRITER STEP 8: Certifications suggested ===");
+            log.info("=== REWRITER: Enhancement complete ===");
 
         } catch (Exception e) {
             System.err.println("⚠️ Resume enhancement encountered an error: " + e.getMessage());

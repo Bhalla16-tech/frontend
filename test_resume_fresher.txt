@@ -1,0 +1,53 @@
+Rahul Sharma
+rahul.sharma@gmail.com | +91-98765-43210 | Hyderabad, Telangana
+linkedin.com/in/rahulsharma
+
+Objective
+Looking for a challenging role where I can grow and learn.
+
+Education
+B.Tech in Computer Science and Engineering
+JNTU Hyderabad | 2019 - 2023 | CGPA: 7.8/10
+
+Father's Name: Mr. Ramesh Sharma
+Date of Birth: 15-March-2001
+Gender: Male
+Marital Status: Single
+Nationality: Indian
+
+Technical Skills
+Languages: Java, Python, C
+Web: HTML, CSS, JavaScript
+Database: MySQL
+Tools: VS Code, Eclipse
+
+Projects
+1. Online Shopping Website
+   - Responsible for developing the frontend using HTML and CSS
+   - Helped in creating the database schema
+   - Worked on the payment integration module
+
+2. Student Management System
+   - Tasked with building the CRUD operations
+   - Was involved in testing the application
+   - Participated in documentation
+
+Work Experience
+Intern at TCS (June 2023 - August 2023)
+   - Assisted with API development
+   - Helped the team with bug fixing
+
+Achievements
+- Won college hackathon 2022
+- Active member of coding club
+
+Hobbies
+Reading books, Playing cricket, Listening to music
+
+Declaration
+I hereby declare that the above information is true to the best
+of my knowledge and belief.
+
+Signature: Rahul Sharma
+Place: Hyderabad
+Date: 01-01-2024

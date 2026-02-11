@@ -1,6 +1,8 @@
 package com.kinovek.backend.service;
 
 import com.kinovek.backend.config.KeywordConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,8 @@ import java.util.regex.Pattern;
  */
 @Service
 public class ResumeTextParserService {
+
+    private static final Logger log = LoggerFactory.getLogger(ResumeTextParserService.class);
 
     @Autowired
     private KeywordConfig keywordConfig;
@@ -83,13 +87,16 @@ public class ResumeTextParserService {
 
         try {
             String[] lines = resumeText.split("\\r?\\n");
+            log.info("=== TEXT PARSER: Parsing resume | {} chars | {} lines ===", resumeText.length(), lines.length);
 
             // Step 1: Extract personal info from top of resume
             Map<String, Object> personalInfo = extractPersonalInfo(lines, resumeText);
             result.put("personalInfo", personalInfo);
+            log.info("=== TEXT PARSER STEP 1: Personal info extracted: {} ===", personalInfo.keySet());
 
             // Step 2: Detect and split sections
             Map<String, String> sections = detectAndSplitSections(lines);
+            log.info("=== TEXT PARSER STEP 2: Sections detected: {} ===", sections.keySet());
 
             // Step 3: Parse each section
             result.put("summary", parseSummary(sections));
@@ -99,6 +106,7 @@ public class ResumeTextParserService {
             result.put("projects", parseProjects(sections));
             result.put("certifications", parseCertifications(sections));
             result.put("achievements", parseAchievements(sections));
+            log.info("=== TEXT PARSER STEP 3: All sections parsed ===");
 
         } catch (Exception e) {
             System.err.println("⚠️ Resume parsing encountered an error: " + e.getMessage());
