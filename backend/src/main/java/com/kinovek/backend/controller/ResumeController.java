@@ -12,6 +12,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -29,6 +30,12 @@ public class ResumeController {
 
     @Autowired
     private ATSScoringService atsScoringService;
+
+    @Autowired
+    private ATSScoreService atsScoreService;
+
+    @Autowired
+    private CoverLetterService coverLetterService;
 
     @Autowired
     private com.kinovek.backend.service.ATSConverterService atsConverterService;
@@ -67,22 +74,70 @@ public class ResumeController {
 
     /**
      * POST /api/v1/resume/ats-score
-     * Get ATS compatibility score for a resume.
+     * Get AI-powered ATS compatibility score for a resume.
      */
     @PostMapping("/ats-score")
     public ResponseEntity<?> getATSScore(
             @RequestParam("resume") MultipartFile resumeFile,
-            @RequestParam(value = "jobDescription", defaultValue = "") String jobDescription) {
+            @RequestParam("jobDescription") String jobDescription) {
         try {
+            System.out.println("=== ATS Score Request Received ===");
+
+            // Extract text from uploaded PDF
             String resumeText = resumeParserService.parseResume(resumeFile);
-            ATSScoreResponse result = atsScoringService.calculateScore(resumeText, jobDescription);
-            return ResponseEntity.ok(result);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(
-                    ApiResponse.error("INVALID_FILE_TYPE", e.getMessage()));
+
+            if (resumeText == null || resumeText.trim().isEmpty()) {
+                Map<String, Object> error = new HashMap<>();
+                error.put("error", "Could not extract text from the uploaded file. Please ensure it's a valid PDF.");
+                return ResponseEntity.badRequest().body(error);
+            }
+
+            // Get AI-powered ATS analysis
+            Map<String, Object> scoreResult = atsScoreService.analyzeResume(resumeText, jobDescription);
+
+            return ResponseEntity.ok(scoreResult);
+
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(
-                    ApiResponse.error("PROCESSING_ERROR", "Failed to calculate ATS score: " + e.getMessage()));
+            System.err.println("ATS Score endpoint error: " + e.getMessage());
+            e.printStackTrace();
+            Map<String, Object> error = new HashMap<>();
+            error.put("error", "Analysis failed: " + e.getMessage());
+            error.put("overallScore", 0);
+            return ResponseEntity.status(500).body(error);
+        }
+    }
+
+    /**
+     * POST /api/v1/resume/cover-letter
+     * Generate a cover letter from resume + job description.
+     */
+    @PostMapping("/cover-letter")
+    public ResponseEntity<?> generateCoverLetter(
+            @RequestParam("resume") MultipartFile resumeFile,
+            @RequestParam("jobDescription") String jobDescription) {
+        try {
+            System.out.println("=== Cover Letter Request Received ===");
+
+            String resumeText = resumeParserService.parseResume(resumeFile);
+
+            if (resumeText == null || resumeText.trim().isEmpty()) {
+                Map<String, String> error = new HashMap<>();
+                error.put("error", "Could not extract text from the uploaded file.");
+                return ResponseEntity.badRequest().body(error);
+            }
+
+            String coverLetter = coverLetterService.generateCoverLetter(resumeText, jobDescription);
+
+            Map<String, String> result = new HashMap<>();
+            result.put("coverLetter", coverLetter);
+            result.put("status", "success");
+            return ResponseEntity.ok(result);
+
+        } catch (Exception e) {
+            System.err.println("Cover Letter endpoint error: " + e.getMessage());
+            Map<String, String> error = new HashMap<>();
+            error.put("error", "Generation failed: " + e.getMessage());
+            return ResponseEntity.status(500).body(error);
         }
     }
 
